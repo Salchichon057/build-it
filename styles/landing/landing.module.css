@@ -1,0 +1,250 @@
+.landing {
+    color: #02273A;
+    text-align: center;
+}
+
+.header {
+    background-color: #ffffffd5;
+    color: #02273A;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    img {
+        width: 100px;
+        height: auto;
+
+
+    }
+}
+
+.navLinks {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.navLinks li a {
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.authLinks {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.authLinks li a {
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.authLinks li:nth-child(2) a {
+    background-color: #02273A;
+    color: white;
+    padding: 0.5rem 2rem;
+    border-radius: 100px;
+    transition: background-color 0.3s ease;
+}
+
+.authLinks li a:hover {
+    color: #3498db;
+}
+
+.authLinks li:nth-child(2) a:hover {
+    background-color: #34495e;
+    color: white;
+}
+
+@media (max-width: 450px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navLinks {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .authLinks li:nth-child(1) a {
+        display: none;
+    }
+}
+
+
+
+
+/* ! MAIN */
+.hero {
+    position: relative;
+    min-height: 70vh;
+    background-image: url('/landing/hero.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.heroContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    padding: 2rem 2rem 0 2rem;
+
+    img {
+        width: 70px;
+        height: auto;
+        margin: 2rem 2rem 2rem 0;
+    }
+
+    h1 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+}
+
+.heroText {
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: self-start;
+    text-align: left;
+
+    h2 {
+        max-width: 600px;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    p {
+        max-width: 450px;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .ctaButton {
+        display: inline-block;
+        padding: 0.75rem 3.5rem;
+        background-color: #02273A;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #34495e;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        background-image: url('/landing/hero.png');
+        background-size: cover;
+        background-position: left;
+    }
+
+    /* .heroContent {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1rem 0 1rem;
+
+        img {
+            width: 50px;
+            margin: 0 0 1rem 0;
+        }
+    } */
+
+    .heroText {
+        margin-left: 3rem;
+        align-items: flex-start;
+        text-align: left;
+
+        p {
+            font-size: 1.5rem;
+            margin: 0 1rem 1.5rem 0;
+            max-width: 400px;
+        }
+    }
+
+    .heroText h2 {
+        font-size: 2rem;
+    }
+
+    .heroText p {
+        font-size: 1rem;
+    }
+
+
+    .heroText .ctaButton {
+        padding: 0.75rem 2rem;
+    }
+
+    .heroText img {
+        width: 50px;
+    }
+
+    .navLinks {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroText {
+        margin-left: 0;
+        align-items: center;
+        text-align: center;
+
+        p {
+            font-size: 1.5rem;
+            /* margin-bottom: 1rem; */
+            margin: 1rem 0;
+            max-width: 400px;
+        }
+    }
+
+
+    .heroContent {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 0.5rem 0 0.5rem;
+
+        img {
+            width: 50px;
+            margin: 0 0 1rem 0;
+        }
+    }
+    .heroText h2 {
+        font-size: 1.5rem;
+    }
+
+    .heroText p {
+        font-size: 1rem;
+    }
+
+    .heroText .ctaButton {
+        padding: 0.75rem 1.5rem;
+    }
+}
