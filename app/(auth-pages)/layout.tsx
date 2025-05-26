@@ -4,6 +4,15 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-7xl flex flex-col gap-12 items-start">{children}</div>
+    <>
+    {/* este estilo en tailwind img {
+        width: 100px;
+        height: auto;
+        que esté al lado izquierdo y que aparte y con este color de fondo #f3f4f6
+
+    } */}
+      <img src="/logo.svg" alt="Logo de BuildIt"  className="w-24 h-auto m-4" />
+      <div className="">{children}</div>
+    </>
   );
 }
