@@ -136,7 +136,8 @@ export function LoginForm({ signInAction, message }: LoginFormProps) {
             </Link>
             <p>
               ¿Aún no tienes cuenta?{" "}
-              <Link href="/auth/register" className={styles.link}>
+              <Link href="sign-up"
+               className={styles.link}>
                 Únete ahora
               </Link>
             </p>
