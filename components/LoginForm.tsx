@@ -6,15 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState, useTransition } from "react";
-import { z } from "zod";
 import styles from "@/styles/auth/login.module.css";
-
-const loginSchema = z.object({
-  email: z.string().email("Formato de email inválido"),
-  password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
-});
-
-type LoginInput = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
   signInAction: (formData: FormData) => Promise<{ error?: string }>;
@@ -30,30 +22,17 @@ export function LoginForm({ signInAction, message }: LoginFormProps) {
 
   const handleSubmit = (formData: FormData) => {
     setErrors({});
-    const payload: LoginInput = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
 
-    const result = loginSchema.safeParse(payload);
-    if (!result.success) {
-      const fieldErrors = result.error.errors.reduce(
-        (acc: { [key: string]: string }, curr) => {
-          acc[curr.path[0] as string] = curr.message;
-          return acc;
-        },
-        {}
-      );
-      setErrors(fieldErrors);
-      return;
-    }
-
-    startTransition(() => {
-      signInAction(formData).then((response) => {
-        if (response?.error) {
+    startTransition(async () => {
+      const response = await signInAction(formData);
+      if (response?.error) {
+        try {
+          const parsedErrors = JSON.parse(response.error);
+          setErrors(parsedErrors);
+        } catch (e) {
           setErrors({ general: response.error });
         }
-      });
+      }
     });
   };
 
@@ -136,8 +115,7 @@ export function LoginForm({ signInAction, message }: LoginFormProps) {
             </Link>
             <p>
               ¿Aún no tienes cuenta?{" "}
-              <Link href="sign-up"
-               className={styles.link}>
+              <Link href="/sign-up" className={styles.link}>
                 Únete ahora
               </Link>
             </p>

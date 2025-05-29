@@ -19,6 +19,8 @@ export const registerSchema = z
 			errorMap: () => ({ message: "Seleccione una categoría de cuenta válida" }),
 		}),
 		speciality: z.string().optional(),
+		experience_years: z.string().optional(),
+		skills: z.string().optional(),
 		cv_url: z.string().optional(),
 		address: z.string().optional(),
 		profile_image: z.string().optional(),

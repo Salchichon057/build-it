@@ -1,5 +1,11 @@
-import { signUpAction } from "@/app/actions";
+import { skillService } from "@/lib/skills/service/skillService";
 import { RegisterForm } from "@/components/RegisterForm";
+import { authController } from "@/lib/auth/controllers/authController";
+
+export async function signUpAction(formData: FormData) {
+  "use server";
+  return await authController.signUp(formData);
+}
 
 export default async function SignUp({
   searchParams,
@@ -7,5 +13,14 @@ export default async function SignUp({
   searchParams: Promise<{ [key: string]: string }>;
 }) {
   const message = await searchParams;
-  return <RegisterForm signUpAction={signUpAction} message={message} />;
+
+  const skills = await skillService.getAvailableSkills();
+
+  return (
+    <RegisterForm
+      signUpAction={signUpAction}
+      message={message}
+      initialSkills={skills}
+    />
+  );
 }
