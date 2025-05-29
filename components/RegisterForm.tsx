@@ -267,20 +267,31 @@ export function RegisterForm({
               />
               <div className={styles.skillSection}>
                 <label className={styles.label}>Habilidades</label>
-                <InputGroup
-                  label="Seleccionar habilidades"
-                  id="skills"
-                  name="skills"
-                  type="select"
-                  value={skills}
-                  onChange={handleSkillChange}
-                  options={availableSkills.map((skill) => ({
-                    value: skill.id,
-                    label: skill.name,
-                  }))}
-                  multiple
-                  error={errors.skills}
-                />
+                <div className={styles.selectedSkills}>
+                  {skills.length > 0 ? (
+                    skills.map((skillId) => {
+                      const skill = availableSkills.find(
+                        (s) => s.id === skillId
+                      );
+                      return skill ? (
+                        <span key={skillId} className={styles.skillTag}>
+                          {skill.name}
+                          <button
+                            type="button"
+                            onClick={() => handleSkillRemove(skillId)}
+                            className={styles.removeSkill}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ) : null;
+                    })
+                  ) : (
+                    <span className={styles.noSkills}>
+                      No has seleccionado habilidades
+                    </span>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(true)}
@@ -288,23 +299,6 @@ export function RegisterForm({
                 >
                   Abrir selector de habilidades
                 </button>
-                <div className={styles.selectedSkills}>
-                  {skills.map((skillId) => {
-                    const skill = availableSkills.find((s) => s.id === skillId);
-                    return skill ? (
-                      <span key={skillId} className={styles.skillTag}>
-                        {skill.name}
-                        <button
-                          type="button"
-                          onClick={() => handleSkillRemove(skillId)}
-                          className={styles.removeSkill}
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ) : null;
-                  })}
-                </div>
               </div>
               {isModalOpen && (
                 <div className={styles.modalOverlay}>
@@ -427,7 +421,7 @@ export function RegisterForm({
           )}
 
           <div className={styles.linksContainer}>
-            <Link href="/auth/sign-in" className={styles.link}>
+            <Link href="/sign-in" className={styles.link}>
               ¿Ya tienes una cuenta? Inicia sesión
             </Link>
             <Link href="/forgot-password" className={styles.link}>
