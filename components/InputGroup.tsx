@@ -20,7 +20,7 @@ interface InputGroupProps {
   accept?: string;
   showTogglePassword?: boolean;
   togglePassword?: () => void;
-  multiple?: boolean; // Nuevo prop para soportar selecciones múltiples
+  multiple?: boolean;
 }
 
 export function InputGroup({
@@ -41,12 +41,15 @@ export function InputGroup({
 }: InputGroupProps) {
   return (
     <div className={styles.inputGroup}>
-      <Label
-        htmlFor={id}
-        className={`${styles.label} ${error ? styles.labelError : ""}`}
-      >
-        {label}
-      </Label>
+      <div className={styles.labelContainer}>
+        <Label
+          htmlFor={id}
+          className={`${styles.label} ${error ? styles.labelError : ""}`}
+        >
+          {label} {required && <span className={styles.required}>*</span>}
+        </Label>
+        {error && <span className={styles.errorSublabel}>{error}</span>}
+      </div>
       {type === "select" && options ? (
         <select
           id={id}
@@ -94,7 +97,6 @@ export function InputGroup({
           )}
         </div>
       )}
-      {error && <p className={styles.errorMessage}>{error}</p>}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { authController } from "@/lib/auth/controllers/authController";
 
 export async function signUpAction(formData: FormData) {
   "use server";
+  console.log("El registro tiene esta data:", formData); 
   return await authController.signUp(formData);
 }
 

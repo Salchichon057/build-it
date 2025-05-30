@@ -6,6 +6,7 @@ import { InputGroup } from "@/components/InputGroup";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { Skill } from "@/lib/skills/model/skill";
+import { registerSchema } from "@/lib/validators/auth";
 import styles from "@/styles/auth/login.module.css";
 
 interface RegisterFormProps {
@@ -77,17 +78,70 @@ export function RegisterForm({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const availableSkills = initialSkills;
 
-  const handleSubmit = (formData: FormData) => {
-    setErrors({});
+  const validateForm = (data: any) => {
+    try {
+      registerSchema.parse(data);
+      setErrors({});
+      return true;
+    } catch (error: any) {
+      const newErrors: { [key: string]: string } = {};
+      error.errors.forEach((err: any) => {
+        newErrors[err.path[0]] = err.message;
+      });
+      setErrors(newErrors);
+      return false;
+    }
+  };
+
+  const handleSubmit = async (formData: FormData) => {
+    const formDataObject = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      birthdate,
+      phone,
+      account_type: accountType,
+      account_category: accountCategory,
+      speciality,
+      experience_years: experienceYears,
+      skills: skills.join(","),
+      cv_url: cvFile ? cvFile.name : "",
+      address,
+      password,
+      confirmPassword,
+    };
+
+    if (!validateForm(formDataObject)) return;
 
     startTransition(async () => {
       const response = await signUpAction(formData);
       if (response?.error) {
-        setErrors({ general: response.error });
+        const errorMessages = response.error.split(", ");
+        const newErrors: { [key: string]: string } = {};
+        errorMessages.forEach((msg) => {
+          const fieldMatch = msg.match(
+            /^(El nombre|El apellido|Formato de email|La contraseña|La confirmación)/
+          );
+          if (fieldMatch) {
+            if (msg.includes("nombre")) newErrors.first_name = msg;
+            else if (msg.includes("apellido")) newErrors.last_name = msg;
+            else if (msg.includes("email")) newErrors.email = msg;
+            else if (msg.includes("contraseña")) newErrors.password = msg;
+            else if (msg.includes("confirmación"))
+              newErrors.confirmPassword = msg;
+          } else {
+            newErrors.general = response.error ?? "";
+          }
+        });
+        setErrors(
+          Object.keys(newErrors).length > 0
+            ? newErrors
+            : { general: response.error }
+        );
       }
     });
   };
@@ -95,31 +149,22 @@ export function RegisterForm({
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const formDataObject = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      account_type: accountType,
+      account_category: accountCategory,
+    };
+
+    if (!validateForm(formDataObject)) return;
+
     if (accountType === "professional" && !showProfessionalFields) {
       setShowProfessionalFields(true);
     } else if (accountType === "client") {
-      const form = (e.currentTarget as HTMLButtonElement).form;
+      const form = e.currentTarget as HTMLFormElement;
       if (form) {
         handleSubmit(new FormData(form));
-      }
-    }
-  };
-
-  const handleSkillChange = (
-    e:
-      | React.ChangeEvent<HTMLSelectElement>
-      | React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (e.target instanceof HTMLSelectElement) {
-      const selectedOptions = Array.from(
-        e.target.selectedOptions,
-        (option) => option.value
-      );
-      if (selectedOptions.length <= 5) {
-        setSkills(selectedOptions);
-        setErrors({ skills: "" });
-      } else {
-        setErrors({ skills: "Puedes seleccionar máximo 5 habilidades" });
       }
     }
   };
@@ -153,7 +198,7 @@ export function RegisterForm({
     <div className={styles.container}>
       <div className={styles.formCard}>
         <h1 className={styles.title}>Registrarse</h1>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleNext}>
           <InputGroup
             label="Nombre"
             id="first_name"
@@ -303,17 +348,19 @@ export function RegisterForm({
               {isModalOpen && (
                 <div className={styles.modalOverlay}>
                   <div className={styles.modalContent}>
-                    <h3 className={styles.modalTitle}>
-                      Seleccionar habilidades
-                    </h3>
-                    <SearchInput
-                      label="Buscar habilidades"
-                      id="skillSearch"
-                      name="skillSearch"
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      placeholder="Ejemplo: Hormigonado, Techado..."
-                    />
+                    <div className={styles.modalHeader}>
+                      <h3 className={styles.modalTitle}>
+                        Seleccionar habilidades
+                      </h3>
+                      <SearchInput
+                        label="Buscar habilidades"
+                        id="skillSearch"
+                        name="skillSearch"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        placeholder="Ejemplo: Hormigonado, Techado..."
+                      />
+                    </div>
                     <ul className={styles.skillList}>
                       {filteredSkills.map((skill) => (
                         <li key={skill.id} className={styles.skillItem}>
@@ -393,13 +440,18 @@ export function RegisterForm({
           />
 
           {errors.general && (
-            <p className="text-red-500 text-sm mt-2">{errors.general}</p>
+            <p
+              className={`text-sm mt-2 ${errors.general.includes("Thanks") ? "text-green-500" : "text-red-500"}`}
+            >
+              {errors.general}
+            </p>
           )}
 
           {accountType === "professional" && !showProfessionalFields ? (
             <SubmitButton
               pendingText="Cargando..."
               className={styles.submitButton}
+              disabled={isPending}
               onClick={handleNext}
             >
               Siguiente
@@ -408,12 +460,9 @@ export function RegisterForm({
             <SubmitButton
               pendingText="Registrando..."
               className={styles.submitButton}
-              onClick={(e) => {
-                e.preventDefault();
-                const form = (e.currentTarget as HTMLButtonElement).form;
-                if (form) {
-                  handleSubmit(new FormData(form));
-                }
+              disabled={isPending}
+              formAction={async (formData: FormData) => {
+                await signUpAction(formData);
               }}
             >
               Registrarse

@@ -41,10 +41,6 @@
     font-weight: 500;
 }
 
-.labelError {
-    color: #dc2626;
-}
-
 .input {
     margin-top: 0.25rem;
     padding: 0.5rem;
@@ -214,6 +210,14 @@
     overflow-y: auto;
 }
 
+.modalHeader {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding-bottom: 10px;
+    z-index: 10;
+}
+
 .modalTitle {
     font-size: 1.25rem;
     font-weight: 600;
@@ -225,11 +229,15 @@
 .skillList {
     list-style: none;
     padding: 0;
-    margin-top: .5rem;
+    margin: 0;
+    max-height: 50dvh;
+    overflow-y: auto;
+    margin-bottom: 10px;
 }
 
 .skillItem {
-    margin-bottom: 0.5rem;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 .skillButton {
@@ -270,4 +278,19 @@
 
 .closeButton:hover {
     background-color: #2B8BC5;
+}
+
+.labelContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.labelError {
+    color: #dc2626;
+}
+
+.errorSublabel {
+    font-size: 0.75rem;
+    color: #dc2626;
+    margin-top: 0.25rem;
 }
