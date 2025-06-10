@@ -5,13 +5,14 @@ import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { User } from "@/lib/auth/model/user";
 import { registerSchema } from "@/lib/validators/auth";
+import { skillService } from "../../skills/service/skillService";
+import { storageController } from "../../storage/controllers/storageController";
 
 export const authController = {
   signUp: async (formData: FormData) => {
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();
     const origin = (await headers()).get("origin");
-    const cvFile = formData.get("cv_file") as File | null;
 
     // Preparar los datos para la validación
     const userData = {
@@ -24,10 +25,10 @@ export const authController = {
       account_category: formData.get("account_category")?.toString() || "",
       speciality: formData.get("speciality")?.toString() || undefined,
       experience_years: formData.get("experience_years")?.toString() || undefined,
-      skills: formData.get("skills")?.toString() || undefined,
-      cv_url: undefined, // Será seteado después de subir el archivo
+      skills: formData.getAll("skills").filter((skill): skill is string => typeof skill === "string"),
+      cv_file: formData.get("cv_file") as File | null,
+      profile_image: formData.get("profile_image") as File | null,
       address: formData.get("address")?.toString() || undefined,
-      profile_image: undefined,
       password: password || "",
       confirmPassword: formData.get("confirmPassword")?.toString() || "",
     };
@@ -41,24 +42,36 @@ export const authController = {
       return encodedRedirect("error", "/sign-up", errorMessage);
     }
 
-    // Subir el CV si existe
+    // Subir CV y foto de perfil usando storageController
     let cvUrl: string | null = null;
+    let cvFileName: string | null = null;
+    let profileImageUrl: string | null = null;
+    let profileImageName: string | null = null;
+
+    const cvFile = formData.get("cv_file") as File | null;
+    const profileImageFile = formData.get("profile_image") as File | null;
+
     if (cvFile && cvFile.size > 0) {
-      const supabase = await createClient();
-      const fileName = `${Date.now()}-${cvFile.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from("cv-files")
-        .upload(fileName, cvFile);
-
-      if (uploadError) {
-        return encodedRedirect("error", "/sign-up", "Failed to upload CV");
+      try {
+        const storedFile = await storageController.uploadCV(formData);
+        cvUrl = storedFile.publicUrl;
+        cvFileName = storedFile.name;
+      } catch (error) {
+        return encodedRedirect("error", "/sign-up", (error as Error).message);
       }
-
-      const { data: storageData } = supabase.storage.from("cv-files").getPublicUrl(fileName);
-      cvUrl = storageData.publicUrl;
     }
 
-    // Preparar los datos del usuario para el registro
+    if (profileImageFile && profileImageFile.size > 0) {
+      try {
+        const storedFile = await storageController.uploadProfileImage(formData);
+        profileImageUrl = storedFile.publicUrl;
+        profileImageName = storedFile.name;
+      } catch (error) {
+        return encodedRedirect("error", "/sign-up", (error as Error).message);
+      }
+    }
+
+    // Preparar los datos iniciales del usuario para el registro
     const userDataToInsert: Omit<User, "id" | "created_at"> = {
       first_name: userData.first_name,
       last_name: userData.last_name,
@@ -69,11 +82,8 @@ export const authController = {
       account_category: userData.account_category as "enterprise" | "person",
       speciality: userData.speciality || null,
       cv_url: cvUrl,
+      profile_image: profileImageUrl,
       address: userData.address || null,
-      profile_image: null,
-      selectedSkills: userData.skills
-        ? userData.skills.split(",").map((skill) => ({ id: skill, name: "" }))
-        : [],
     };
 
     try {
@@ -81,17 +91,73 @@ export const authController = {
         emailRedirectTo: `${origin}/auth/callback`,
       });
       if (error) {
-        return encodedRedirect("error", "/sign-up", "An error occurred during signup");
+        return encodedRedirect("error", "/sign-up", "Ocurrió un error durante el registro");
       }
+
+      // Insertar las habilidades en la tabla user_skills
+      if (data.user && userData.skills.length > 0) {
+        const userId = data.user.id;
+        const supabase = await createClient();
+
+        const userSkills = userData.skills.map((skillId) => ({
+          user_id: userId,
+          skill_id: skillId,
+        }));
+
+        const { error: skillsError } = await supabase
+          .from("user_skills")
+          .insert(userSkills);
+
+        if (skillsError) {
+          console.error("Error al insertar habilidades:", skillsError.message);
+          return encodedRedirect("error", "/sign-up", "Error al guardar las habilidades del usuario");
+        }
+      }
+
+      // Renombrar archivos después de crear el usuario
+      if (data.user) {
+        const userId = data.user.id;
+        const supabase = await createClient();
+        const updateData: Partial<User> = {};
+
+        if (cvFileName) {
+          const cvMatch = cvFileName.match(/\.[^.]+$/);
+          const cvExtension = cvMatch ? cvMatch[0] : "";
+          const newCvFileName = `${userId}${cvExtension}`;
+          const renamedFile = await storageController.renameFile("cvs", cvFileName, newCvFileName);
+          updateData.cv_url = renamedFile.publicUrl;
+        }
+
+        if (profileImageName) {
+          const profileImageMatch = profileImageName.match(/\.[^.]+$/);
+          const profileImageExtension = profileImageMatch ? profileImageMatch[0] : "";
+          const newProfileImageName = `${userId}${profileImageExtension}`;
+          const renamedFile = await storageController.renameFile("profile-images", profileImageName, newProfileImageName);
+          updateData.profile_image = renamedFile.publicUrl;
+        }
+
+        if (Object.keys(updateData).length > 0) {
+          const { error: updateError } = await supabase
+            .from("users")
+            .update(updateData)
+            .eq("id", userId);
+
+          if (updateError) {
+            console.error("Error al actualizar las URLs de los archivos renombrados:", updateError.message);
+          }
+        }
+      }
+
       return encodedRedirect(
         "success",
         "/sign-up",
-        "Thanks for signing up! Please check your email for a verification link.",
+        "¡Gracias por registrarte! Por favor, revisa tu correo para encontrar un enlace de verificación."
       );
     } catch (error) {
-      return encodedRedirect("error", "/sign-up", "An error occurred during signup");
+      return encodedRedirect("error", "/sign-up", "Ocurrió un error durante el registro");
     }
   },
+
 
   signIn: async (formData: FormData) => {
     const email = formData.get("email")?.toString();
@@ -109,6 +175,7 @@ export const authController = {
 
     return redirect("/protected");
   },
+
 
   forgotPassword: async (formData: FormData) => {
     const email = formData.get("email")?.toString();

@@ -7,7 +7,7 @@ export interface User {
   email: string;
   birthdate?: string | null;
   phone?: string | null;
-  account_type: 'client' | 'professional' | 'admin';
+  account_type: 'client' | 'professional';
   account_category: 'enterprise' | 'person';
   speciality?: string | null;
   cv_url?: string | null;
