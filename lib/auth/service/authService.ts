@@ -6,13 +6,13 @@ export const authService = {
 		const { data: authData, error: authError } = await authRepository.signUp(email, password, options);
 		if (authError) {
 			console.error("Auth error:", authError.message || authError);
-			throw authError;
+			return { data: null, error: authError.message || String(authError) };
 		}
 
 		const { error: dbError } = await authRepository.insertUser(userData);
 		if (dbError) {
 			console.error("Database error:", dbError.message || dbError);
-			throw dbError;
+			return { data: null, error: dbError.message || String(dbError) };
 		}
 
 		console.log("User data inserted successfully for email:", email);

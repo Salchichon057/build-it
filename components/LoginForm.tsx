@@ -5,7 +5,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import styles from "@/styles/auth/login.module.css";
 
 interface LoginFormProps {
@@ -19,6 +19,24 @@ export function LoginForm({ signInAction, message }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [, startTransition] = useTransition();
+
+  const [localMessage, setLocalMessage] = useState(message);
+
+  useEffect(() => {
+    setLocalMessage(message);
+    if (message?.success) {
+      const timer = setTimeout(() => {
+        setLocalMessage({});
+        // Opcional: limpiar la query string del navegador
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+      }, 5000); // 5 segundos
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const handleSubmit = (formData: FormData) => {
     setErrors({});
@@ -120,7 +138,8 @@ export function LoginForm({ signInAction, message }: LoginFormProps) {
               </Link>
             </p>
           </div>
-          {message && <FormMessage message={message} />}
+          {/* {message && <FormMessage message={message} />} */}
+          {localMessage && <FormMessage message={localMessage} />}
         </form>
       </div>
     </div>

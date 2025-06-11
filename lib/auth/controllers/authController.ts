@@ -10,10 +10,9 @@ export const authController = {
   signUp: async (formData: FormData) => {
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();
-    const origin = (await headers()).get("origin");
 
     if (!email || !password) {
-      return encodedRedirect("error", "/sign-up", "Email y contraseña son obligatorios");
+      return { error: "Email y contraseña son obligatorios" };
     }
 
     const userData = {
@@ -31,7 +30,7 @@ export const authController = {
       const errorMessage = validationResult.error.errors
         .map((err) => err.message)
         .join(", ");
-      return encodedRedirect("error", "/sign-up", errorMessage);
+      return { error: errorMessage };
     }
 
     const userDataToInsert: Omit<User, "id" | "created_at"> = {
@@ -48,21 +47,33 @@ export const authController = {
       address: null,
     };
 
+    const origin = (await headers()).get("origin") || process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
     console.log("Attempting sign up with email:", email);
     const { data, error } = await authService.signUp(email, password, userDataToInsert, {
       emailRedirectTo: `${origin}/auth/callback`,
     });
 
     if (error) {
-      const errorMessage = (typeof error === "object" && error !== null && "message" in error) ? (error as { message?: string }).message : String(error);
+      let errorMessage = (typeof error === "object" && error !== null && "message" in error)
+        ? (error as { message?: string }).message
+        : String(error);
+
+      if (
+        (errorMessage ?? "").includes("duplicate key value") &&
+        (errorMessage ?? "").includes("users_email_key")
+      ) {
+        errorMessage = "Ya existe una cuenta con este correo electrónico.";
+      }
+
       console.error("Sign up error:", errorMessage);
-      return encodedRedirect("error", "/sign-up", "Ocurrió un error durante el registro: " + (errorMessage || "Desconocido"));
+      return { error: "Ocurrió un error durante el registro: " + (errorMessage || "Desconocido") };
     }
 
     // Redirección exitosa
     return encodedRedirect(
       "success",
-      "/sign-up",
+      "/sign-in",
       "¡Gracias por registrarte! Por favor, revisa tu correo para verificar tu cuenta."
     );
   },

@@ -17,13 +17,7 @@ export default async function SignUp({
 }: {
   searchParams: Promise<{ [key: string]: string }>;
 }) {
-  const params = await searchParams;
-  const message = {
-    success: params.success,
-    error: params.error,
-    message: params.success || params.error || "",
-  };
-
+  const message = await searchParams;
   return (
     <div>
       <RegisterForm signUpAction={signUpAction} message={message} />

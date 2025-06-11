@@ -4,7 +4,7 @@ import { FormMessage } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { InputGroup } from "@/components/InputGroup";
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { registerSchema } from "@/lib/validators/auth";
 import styles from "@/styles/auth/login.module.css";
 
@@ -26,6 +26,25 @@ export function RegisterForm({ signUpAction, message }: RegisterFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isPending, startTransition] = useTransition();
+  const [localMessage, setLocalMessage] = useState(message);
+
+  useEffect(() => {
+    setLocalMessage(message);
+    if (message?.success) {
+      const timer = setTimeout(() => {
+        setLocalMessage({});
+        // Limpia la query string
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+        // Opcional: redirige al login o landing
+        // window.location.href = "/sign-in";
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const validateForm = (data: any) => {
     try {
@@ -221,7 +240,7 @@ export function RegisterForm({ signUpAction, message }: RegisterFormProps) {
               ¿Has olvidado tu contraseña?
             </Link>
           </div>
-          {message && <FormMessage message={message} />}
+          {localMessage && <FormMessage message={localMessage} />}
         </form>
       </div>
     </div>

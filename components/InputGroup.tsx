@@ -63,11 +63,15 @@ export function InputGroup({
           onChange={onChange as React.ChangeEventHandler<HTMLSelectElement>}
           className={`${styles.input} ${error ? styles.inputError : ""}`}
           required={required}
-          autoComplete={autoComplete || "off"} // Valor por defecto si no se especifica
+          autoComplete={autoComplete || "off"}
         >
-          {!multiple && <option value="">Seleccione una opción</option>}
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
+          {options.map((option, idx) => (
+            <option
+              key={option.value}
+              value={option.value}
+              disabled={option.value === ""}
+              hidden={option.value === "" && value !== ""}
+            >
               {option.label}
             </option>
           ))}
