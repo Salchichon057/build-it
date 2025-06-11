@@ -1,11 +1,15 @@
-import { skillService } from "@/lib/skills/service/skillService";
 import { RegisterForm } from "@/components/RegisterForm";
 import { authController } from "@/lib/auth/controllers/authController";
 
 export async function signUpAction(formData: FormData) {
   "use server";
-  console.log("El registro tiene esta data:", formData); 
-  return await authController.signUp(formData);
+  console.log("El registro tiene esta data:", formData);
+  type SignUpResult = { error?: string; [key: string]: any };
+  const result: SignUpResult = await authController.signUp(formData);
+  if (result?.error) {
+    console.error("Action error:", result.error);
+  }
+  return result;
 }
 
 export default async function SignUp({
@@ -13,15 +17,16 @@ export default async function SignUp({
 }: {
   searchParams: Promise<{ [key: string]: string }>;
 }) {
-  const message = await searchParams;
-
-  const skills = await skillService.getAvailableSkills();
+  const params = await searchParams;
+  const message = {
+    success: params.success,
+    error: params.error,
+    message: params.success || params.error || "",
+  };
 
   return (
-    <RegisterForm
-      signUpAction={signUpAction}
-      message={message}
-      initialSkills={skills}
-    />
+    <div>
+      <RegisterForm signUpAction={signUpAction} message={message} />
+    </div>
   );
 }

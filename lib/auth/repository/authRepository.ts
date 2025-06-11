@@ -34,11 +34,26 @@ export const authRepository = {
 
 	insertUser: async (userData: Omit<User, "id" | "created_at">) => {
 		const supabase = await createClient();
+		console.log("Inserting user data:", userData);
+
 		const { data, error } = await supabase
 			.from("users")
-			.insert(userData)
+			.insert([userData])
 			.select("id")
 			.single();
+		if (error) {
+			console.error("Insert user error:", error.message || error);
+		}
+		return { data, error };
+	},
+
+	updateUser: async (userId: string, userData: Partial<User>) => {
+		const supabase = await createClient();
+		const { data, error } = await supabase
+			.from("users")
+			.update(userData)
+			.eq("id", userId)
+			.select();
 		return { data, error };
 	},
 };

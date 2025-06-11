@@ -4,14 +4,20 @@ import { authRepository } from "../repository/authRepository";
 export const authService = {
 	signUp: async (email: string, password: string, userData: Omit<User, "id" | "created_at">, options: { emailRedirectTo: string }) => {
 		const { data: authData, error: authError } = await authRepository.signUp(email, password, options);
-		if (authError) throw authError;
+		if (authError) {
+			console.error("Auth error:", authError.message || authError);
+			throw authError;
+		}
 
 		const { error: dbError } = await authRepository.insertUser(userData);
-		if (dbError) throw dbError;
+		if (dbError) {
+			console.error("Database error:", dbError.message || dbError);
+			throw dbError;
+		}
 
+		console.log("User data inserted successfully for email:", email);
 		return { data: authData, error: null };
 	},
-
 	signIn: async (email: string, password: string) => {
 		const { data, error } = await authRepository.signIn(email, password);
 		return { data, error };
@@ -30,5 +36,10 @@ export const authService = {
 	signOut: async () => {
 		const { error } = await authRepository.signOut();
 		return { error };
+	},
+
+	updateProfile: async (userId: string, userData: Partial<User>) => {
+		const { data, error } = await authRepository.updateUser(userId, userData);
+		return { data, error };
 	},
 };

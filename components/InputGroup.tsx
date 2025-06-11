@@ -23,6 +23,7 @@ interface InputGroupProps {
   showTogglePassword?: boolean;
   togglePassword?: () => void;
   multiple?: boolean;
+  autoComplete?: string;
 }
 
 export function InputGroup({
@@ -40,6 +41,7 @@ export function InputGroup({
   showTogglePassword,
   togglePassword,
   multiple,
+  autoComplete,
 }: InputGroupProps) {
   return (
     <div className={styles.inputGroup}>
@@ -61,6 +63,7 @@ export function InputGroup({
           onChange={onChange as React.ChangeEventHandler<HTMLSelectElement>}
           className={`${styles.input} ${error ? styles.inputError : ""}`}
           required={required}
+          autoComplete={autoComplete || "off"} // Valor por defecto si no se especifica
         >
           {!multiple && <option value="">Seleccione una opción</option>}
           {options.map((option) => (
@@ -81,6 +84,7 @@ export function InputGroup({
             placeholder={placeholder}
             required={required}
             accept={accept}
+            autoComplete={autoComplete || "off"}
           />
           {showTogglePassword && togglePassword && (
             <button

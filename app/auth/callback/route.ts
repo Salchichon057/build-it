@@ -13,12 +13,25 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient();
     await supabase.auth.exchangeCodeForSession(code);
+
+    // Verificar el tipo de cuenta y redirigir si es profesional
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: userData, error } = await supabase
+        .from("users")
+        .select("account_type")
+        .eq("id", user.id)
+        .single();
+      if (!error && userData && userData.account_type === "professional") {
+        return NextResponse.redirect(`${origin}/complete-profile`);
+      }
+    }
   }
 
   if (redirectTo) {
     return NextResponse.redirect(`${origin}${redirectTo}`);
   }
 
-  // URL to redirect to after sign up process completes
+  // Redirigir a la página protegida por defecto
   return NextResponse.redirect(`${origin}/protected`);
 }
