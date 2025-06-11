@@ -88,34 +88,33 @@ export const authController = {
 
     const userId = user.id;
 
+    // 1. Parsear y limpiar los datos del formulario
     const profileData = {
-      birthdate: formData.get("birthdate")?.toString() || undefined,
-      phone: formData.get("phone")?.toString() || undefined,
-      speciality: formData.get("speciality")?.toString() || undefined,
-      experience_years: formData.get("experience_years")?.toString() || undefined,
+      birthdate: formData.get("birthdate")?.toString() || null,
+      phone: formData.get("phone")?.toString() || null,
+      speciality: formData.get("speciality")?.toString() || null,
+      experience_years: formData.get("experience_years")?.toString() || null,
       skills: formData.getAll("skills").filter((skill): skill is string => typeof skill === "string"),
       cv_file: formData.get("cv_file") as File | null,
       profile_image: formData.get("profile_image") as File | null,
-      address: formData.get("address")?.toString() || undefined,
+      address: formData.get("address")?.toString() || null,
     };
 
+    // 2. Construir el objeto de actualización
     let updateData: Partial<User> = {
-      birthdate: profileData.birthdate || null,
-      phone: profileData.phone || null,
-      speciality: profileData.speciality || null,
-      address: profileData.address || null,
+      birthdate: profileData.birthdate,
+      phone: profileData.phone,
+      speciality: profileData.speciality,
+      address: profileData.address,
+      experience_years: profileData.experience_years,
     };
 
-    if (profileData.experience_years) {
-      updateData.experience_years = profileData.experience_years;
-    }
-
+    // 3. Subida de archivos (CV y foto de perfil)
     try {
       if (profileData.cv_file && profileData.cv_file.size > 0) {
         const storedCV = await storageController.uploadCV(profileData.cv_file, userId);
         updateData.cv_url = storedCV.publicUrl;
       }
-
       if (profileData.profile_image && profileData.profile_image.size > 0) {
         const storedImg = await storageController.uploadProfileImage(profileData.profile_image, userId);
         updateData.profile_image = storedImg.publicUrl;
@@ -124,6 +123,7 @@ export const authController = {
       return encodedRedirect("error", "/complete-profile", error.message || "Error al subir archivos");
     }
 
+    // 4. Actualizar el usuario en la base de datos
     const { error: updateError } = await supabase
       .from("users")
       .update(updateData)
@@ -133,7 +133,12 @@ export const authController = {
       return encodedRedirect("error", "/complete-profile", "Error al actualizar el perfil: " + updateError.message);
     }
 
+    // 5. Actualizar skills (si corresponde)
     if (profileData.skills && profileData.skills.length > 0) {
+      // Elimina skills previos (opcional, si quieres que sean reemplazados)
+      await supabase.from("user_skills").delete().eq("user_id", userId);
+
+      // Inserta los nuevos
       const userSkills = profileData.skills.map((skillId) => ({
         user_id: userId,
         skill_id: skillId,
@@ -148,8 +153,11 @@ export const authController = {
       }
     }
 
-    return encodedRedirect("success", "/complete-profile", "Perfil actualizado correctamente. Redirigiendo a tu perfil...");
+    // 6. Redirigir a la página de profesionales con mensaje de éxito
+    return encodedRedirect("success", "/dashboard/professionals", "Perfil actualizado correctamente.");
   },
+
+
   signIn: async (formData: FormData) => {
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();

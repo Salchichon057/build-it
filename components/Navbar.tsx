@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -14,65 +13,67 @@ export default function Navbar() {
 
   const accountType = session?.user?.user_metadata?.account_type || null;
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleLogout = async () => {
     const supabase = createClient();
     const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error("Error signing out:", error);
-    }
+    if (error) console.error("Error signing out:", error);
     router.push("/");
   };
 
-  if (isLoading || !session) {
-    console.log("Navbar: No session or loading");
-    return null;
-  }
+  if (isLoading || !session) return null;
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navContainer}>
+    <header className={styles.header}>
+      <nav className={styles.navbar}>
         <Link href="/" className={styles.logo}>
+          {/* Si tienes logo como imagen, pon aquí <img src="/logo.svg" alt="BuildIt" /> */}
           BuildIt
         </Link>
-        <button className={styles.menuButton} onClick={toggleMenu}>
-          ☰
+        <button
+          className={styles.menuButton}
+          onClick={toggleMenu}
+          aria-label="Abrir menú"
+        >
+          <span className={styles.hamburger}></span>
         </button>
         <ul className={`${styles.navLinks} ${isOpen ? styles.open : ""}`}>
           {accountType === "client" && (
             <>
               <li>
-                <Link href="/projects">Mis Proyectos</Link>
+                <Link href="/dashboard/projects">Mis Proyectos</Link>
               </li>
               <li>
-                <Link href="/professionals">Explorar Profesionales</Link>
+                <Link href="/dashboard/professionals">
+                  Explorar Profesionales
+                </Link>
               </li>
             </>
           )}
           {accountType === "professional" && (
             <>
               <li>
-                <Link href="/projects/available">Proyectos Disponibles</Link>
+                <Link href="/dashboard/projects/available">
+                  Proyectos Disponibles
+                </Link>
               </li>
               <li>
-                <Link href="/postulations">Mis Postulaciones</Link>
+                <Link href="/dashboard/postulations">Mis Postulaciones</Link>
               </li>
               <li>
-                <Link href="/profile">Mi Perfil</Link>
+                <Link href="/dashboard/profile">Mi Perfil</Link>
               </li>
             </>
           )}
           <li>
-            <Link href="/notifications">Notificaciones</Link>
+            <Link href="/dashboard/notifications">Notificaciones</Link>
           </li>
           <li>
-            <Link href="/profile">Perfil</Link>
+            <Link href="/dashboard/profile">Perfil</Link>
           </li>
           <li>
-            <Link href="/settings">Configuración</Link>
+            <Link href="/dashboard/settings">Configuración</Link>
           </li>
           <li>
             <button onClick={handleLogout} className={styles.logoutButton}>
@@ -80,7 +81,19 @@ export default function Navbar() {
             </button>
           </li>
         </ul>
-      </div>
-    </nav>
+        {/* Avatar o icono de usuario */}
+        <div className={styles.avatarContainer}>
+          <Link href="/dashboard/profile">
+            <img
+              src={
+                session.user.user_metadata?.avatar_url || "/default-avatar.png"
+              }
+              alt="Avatar"
+              className={styles.avatar}
+            />
+          </Link>
+        </div>
+      </nav>
+    </header>
   );
 }

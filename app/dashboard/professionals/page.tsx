@@ -5,7 +5,6 @@ import { createClient } from "@/utils/supabase/server";
 export default async function ProfessionalsPage() {
   const supabase = await createClient();
 
-  // Obtiene el usuario autenticado desde la sesión
   const {
     data: { user },
     error: userError,
@@ -15,7 +14,7 @@ export default async function ProfessionalsPage() {
     return redirect("/sign-in");
   }
 
-  // Consulta el perfil en la tabla users (o profiles si así se llama)
+  // Consulta el perfil en la tabla users
   const { data: profile, error } = await supabase
     .from("users")
     .select("*")
@@ -30,13 +29,11 @@ export default async function ProfessionalsPage() {
     return encodedRedirect("error", "/dashboard", "Acceso no autorizado");
   }
 
-  // Renderiza la página de profesionales con los datos del perfil
   return (
     <div>
       <h1>
         Bienvenido, {profile.first_name} {profile.last_name}
       </h1>
-      {/* Aquí puedes agregar más contenido relacionado con el perfil profesional */}
     </div>
   );
 }
