@@ -7,8 +7,8 @@ import { SubmitButton } from "@/components/submit-button";
 import { SkillSelector } from "@/components/SkillSelector";
 import styles from "@/styles/auth/login.module.css";
 import { createClient } from "@/utils/supabase/client";
-import { authController } from "@/lib/auth/controllers/authController";
 import { updateProfileAction } from "./actions";
+import { validateFile } from "@/lib/validators/fileValidation";
 
 interface UpdateProfileResponse {
   error?: string;
@@ -54,10 +54,28 @@ export default function CompleteProfileClient({
     const target = e.target as HTMLInputElement | HTMLSelectElement;
     const { name, value } = target;
     const files = (target as HTMLInputElement).files;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: files ? files[0] || value : value,
-    }));
+
+    // Si es archivo, valida antes de setear
+    if (files && files[0]) {
+      const error = validateFile(files[0], name as "cv_file" | "profile_image");
+      setErrors((prev) => ({
+        ...prev,
+        [name]: error || "",
+      }));
+      if (error) {
+        // No actualices el formData si hay error
+        return;
+      }
+      setFormData((prev) => ({
+        ...prev,
+        [name]: files[0],
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSkillSelect = (skillId: string) => {
@@ -77,6 +95,7 @@ export default function CompleteProfileClient({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validación de años de experiencia
     const experienceYears = Number(formData.experience_years);
     if (
       isNaN(experienceYears) ||
@@ -90,19 +109,41 @@ export default function CompleteProfileClient({
       return;
     }
 
+    // Validación de archivos antes de enviar
+    const cvError = validateFile(formData.cv_file, "cv_file");
+    const imgError = validateFile(formData.profile_image, "profile_image");
+    if (cvError || imgError) {
+      setErrors((prev) => ({
+        ...prev,
+        cv_file: cvError || "",
+        profile_image: imgError || "",
+      }));
+      return;
+    }
+
+    // Si NO es el último paso, solo avanza el stepper
+    if (step < 3) {
+      setStep(step + 1);
+      setErrors({});
+      return;
+    }
+
+    // Solo en el último paso, envía al servidor
     const form = e.currentTarget as HTMLFormElement;
     const formDataToSubmit = new FormData(form);
+
+    // Adjunta los archivos manualmente si no están en el form
+    if (formData.cv_file) formDataToSubmit.set("cv_file", formData.cv_file);
+    if (formData.profile_image)
+      formDataToSubmit.set("profile_image", formData.profile_image);
 
     startTransition(async () => {
       const response: UpdateProfileResponse =
         await updateProfileAction(formDataToSubmit);
       if (response?.error) {
         setErrors({ general: response.error });
-      } else if (step < 3) {
-        setStep(step + 1);
-        setErrors({});
       } else {
-        window.location.href = "/profile";
+        window.location.href = "/dashboard/professionals";
       }
     });
   };
@@ -235,6 +276,7 @@ export default function CompleteProfileClient({
               pendingText="Guardando..."
               className={styles.submitButton}
               disabled={isPending}
+              type="submit"
             >
               {step < 3 ? "Siguiente" : "Finalizar"}
             </SubmitButton>

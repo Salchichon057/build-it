@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { User } from "@/lib/auth/model/user";
 import { registerSchema } from "@/lib/validators/auth";
+import { storageController } from "@/lib/storage/controllers/storageController";
 
 export const authController = {
   signUp: async (formData: FormData) => {
@@ -86,6 +87,7 @@ export const authController = {
     }
 
     const userId = user.id;
+
     const profileData = {
       birthdate: formData.get("birthdate")?.toString() || undefined,
       phone: formData.get("phone")?.toString() || undefined,
@@ -108,39 +110,18 @@ export const authController = {
       updateData.experience_years = profileData.experience_years;
     }
 
-    let cvUrl: string | null = null;
-    let profileImageUrl: string | null = null;
-
-    if (profileData.cv_file && profileData.cv_file.size > 0) {
-      const cvExtension = profileData.cv_file.name.match(/\.[^.]+$/)?.[0] || ".pdf";
-      const cvFileName = `${userId}-cv${cvExtension}`;
-      const { data, error: uploadError } = await supabase.storage
-        .from("cvs")
-        .upload(cvFileName, profileData.cv_file, {
-          contentType: profileData.cv_file.type,
-          upsert: false,
-        });
-      if (uploadError) {
-        return encodedRedirect("error", "/complete-profile", "Error al subir el CV: " + uploadError.message);
+    try {
+      if (profileData.cv_file && profileData.cv_file.size > 0) {
+        const storedCV = await storageController.uploadCV(profileData.cv_file, userId);
+        updateData.cv_url = storedCV.publicUrl;
       }
-      cvUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/cvs/${cvFileName}`;
-      updateData.cv_url = cvUrl;
-    }
 
-    if (profileData.profile_image && profileData.profile_image.size > 0) {
-      const imgExtension = profileData.profile_image.name.match(/\.[^.]+$/)?.[0] || ".png";
-      const imgFileName = `${userId}-profile-img${imgExtension}`;
-      const { data, error: uploadError } = await supabase.storage
-        .from("profile-images")
-        .upload(imgFileName, profileData.profile_image, {
-          contentType: profileData.profile_image.type,
-          upsert: false,
-        });
-      if (uploadError) {
-        return encodedRedirect("error", "/complete-profile", "Error al subir la imagen de perfil: " + uploadError.message);
+      if (profileData.profile_image && profileData.profile_image.size > 0) {
+        const storedImg = await storageController.uploadProfileImage(profileData.profile_image, userId);
+        updateData.profile_image = storedImg.publicUrl;
       }
-      profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/profile-images/${imgFileName}`;
-      updateData.profile_image = profileImageUrl;
+    } catch (error: any) {
+      return encodedRedirect("error", "/complete-profile", error.message || "Error al subir archivos");
     }
 
     const { error: updateError } = await supabase
@@ -169,7 +150,6 @@ export const authController = {
 
     return encodedRedirect("success", "/complete-profile", "Perfil actualizado correctamente. Redirigiendo a tu perfil...");
   },
-
   signIn: async (formData: FormData) => {
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();

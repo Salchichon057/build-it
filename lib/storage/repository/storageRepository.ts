@@ -23,7 +23,6 @@ export const storageRepository = {
 			publicUrl: data.publicUrl,
 		};
 	},
-
 	deleteFile: async (bucket: string, fileName: string): Promise<void> => {
 		const supabase = await createClient();
 		const { error } = await supabase.storage.from(bucket).remove([fileName]);
