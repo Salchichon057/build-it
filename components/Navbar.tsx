@@ -4,16 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSessionContext } from "@supabase/auth-helpers-react";
+import styles from "@/styles/navbar.module.css";
 import { createClient } from "@/utils/supabase/client";
-import styles from "../styles/navbar.module.css";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { session, isLoading } = useSessionContext();
-
-  // Crear el cliente de Supabase en el lado del cliente
-  const supabase = createClient();
 
   const accountType = session?.user?.user_metadata?.account_type || null;
 
@@ -22,6 +19,7 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
+    const supabase = createClient();
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error("Error signing out:", error);
@@ -30,6 +28,7 @@ export default function Navbar() {
   };
 
   if (isLoading || !session) {
+    console.log("Navbar: No session or loading");
     return null;
   }
 

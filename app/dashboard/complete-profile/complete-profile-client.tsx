@@ -6,22 +6,20 @@ import { InputGroup } from "@/components/InputGroup";
 import { SubmitButton } from "@/components/submit-button";
 import { SkillSelector } from "@/components/SkillSelector";
 import styles from "@/styles/auth/login.module.css";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import { authController } from "@/lib/auth/controllers/authController";
-import { skillService } from "@/lib/skills/service/skillService";
+import { updateProfileAction } from "./actions";
 
-// Tipo para la respuesta de authController.updateProfile
 interface UpdateProfileResponse {
   error?: string;
   success?: string;
 }
 
-export default async function CompleteProfile() {
-  const initialSkills = await skillService.getAvailableSkills();
-  return <CompleteProfileClient initialSkills={initialSkills} />;
-}
-
-function CompleteProfileClient({ initialSkills }: { initialSkills: Skill[] }) {
+export default function CompleteProfileClient({
+  initialSkills,
+}: {
+  initialSkills: Skill[];
+}) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     birthdate: "",
@@ -35,11 +33,11 @@ function CompleteProfileClient({ initialSkills }: { initialSkills: Skill[] }) {
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isPending, startTransition] = useTransition();
-  const [userId, setUserId] = useState<string | null>(null); // Declarar userId como estado
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const getUser = async () => {
-      const supabase = await createClient();
+      const supabase = createClient();
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -78,12 +76,26 @@ function CompleteProfileClient({ initialSkills }: { initialSkills: Skill[] }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const experienceYears = Number(formData.experience_years);
+    if (
+      isNaN(experienceYears) ||
+      experienceYears < 0 ||
+      !Number.isInteger(experienceYears)
+    ) {
+      setErrors({
+        ...errors,
+        experience_years: "Debe ser un número entero mayor o igual a 0",
+      });
+      return;
+    }
+
     const form = e.currentTarget as HTMLFormElement;
     const formDataToSubmit = new FormData(form);
 
     startTransition(async () => {
       const response: UpdateProfileResponse =
-        await authController.updateProfile(formDataToSubmit);
+        await updateProfileAction(formDataToSubmit);
       if (response?.error) {
         setErrors({ general: response.error });
       } else if (step < 3) {
@@ -94,7 +106,6 @@ function CompleteProfileClient({ initialSkills }: { initialSkills: Skill[] }) {
       }
     });
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.formCard}>

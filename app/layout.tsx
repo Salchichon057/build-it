@@ -1,4 +1,5 @@
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL

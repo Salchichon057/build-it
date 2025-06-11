@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 
-export default async function ProtectedPage() {
+export default async function UserDashboard() {
   const supabase = await createClient();
 
   const {
@@ -15,7 +15,6 @@ export default async function ProtectedPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
       <main className="flex-1 max-w-5xl mx-auto p-5">
         <h1 className="text-2xl font-bold mb-4">Bienvenido a BuildIt</h1>
         <p>

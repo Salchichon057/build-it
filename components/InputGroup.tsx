@@ -89,6 +89,8 @@ export function InputGroup({
             required={required}
             accept={accept}
             autoComplete={autoComplete || "off"}
+            min={type === "number" ? 0 : undefined}
+            step={type === "number" ? 1 : undefined}
           />
           {showTogglePassword && togglePassword && (
             <button

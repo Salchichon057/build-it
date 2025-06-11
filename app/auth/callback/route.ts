@@ -23,7 +23,7 @@ export async function GET(request: Request) {
         .eq("id", user.id)
         .single();
       if (!error && userData && userData.account_type === "professional") {
-        return NextResponse.redirect(`${origin}/complete-profile`);
+        return NextResponse.redirect(`${origin}/dashboard/complete-profile`);
       }
     }
   }
@@ -33,5 +33,7 @@ export async function GET(request: Request) {
   }
 
   // Redirigir a la página protegida por defecto
-  return NextResponse.redirect(`${origin}/protected`);
+  // return NextResponse.redirect(`${origin}/protected`);
+  // Redirigir al login
+  return NextResponse.redirect(`${origin}/sign-in`);
 }
