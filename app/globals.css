@@ -7,13 +7,13 @@
 @layer base {
   :root {
     --background: #EBF3FE;
-    --primary-900: #1E3A8A;
+    --primary-900: #02273A;
     --primary-500: #34A1DE;
-    --primary-600: #2B8BC5;
+    --primary-600: #49BEFF;
     --grey-500: #6B7280;
     --grey-600: #4B5563;
-    --action-300: #EF4444;
-    --action-light-100: #FEE2E2;
+    --action-300: #FA896B;
+    --action-light-100: #FBF2EF;
   }
 
   html {

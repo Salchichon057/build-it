@@ -172,9 +172,33 @@ export const authController = {
       return encodedRedirect("error", "/sign-in", error.message);
     }
 
-    return redirect("/protected");
-  },
+    // Obtener el usuario autenticado y su perfil
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return encodedRedirect("error", "/sign-in", "No se pudo obtener el usuario autenticado.");
+    }
 
+    // Buscar el perfil en la tabla users
+    const { data: profile, error: profileError } = await supabase
+      .from("users")
+      .select("account_type")
+      .eq("id", user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return encodedRedirect("error", "/sign-in", "No se pudo obtener el perfil del usuario.");
+    }
+
+    // Redirigir según el rol
+    if (profile.account_type === "client") {
+      return encodedRedirect("success", "/dashboard/projects", "¡Bienvenido! Has iniciado sesión como cliente.");
+    } else if (profile.account_type === "professional") {
+      return encodedRedirect("success", "/dashboard/professionals", "¡Bienvenido! Has iniciado sesión como profesional.");
+    } else {
+      return encodedRedirect("error", "/sign-in", "Rol de usuario no reconocido.");
+    }
+  },
 
   forgotPassword: async (formData: FormData) => {
     const email = formData.get("email")?.toString();

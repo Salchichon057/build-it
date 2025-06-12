@@ -55,4 +55,8 @@ export const authService = {
 		const { data, error } = await authRepository.updateUser(userId, userData);
 		return { data, error };
 	},
+
+	getUserProfile: async (userId: string) => {
+		return await authRepository.getUserProfile(userId);
+	},
 };

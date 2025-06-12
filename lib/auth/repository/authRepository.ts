@@ -56,4 +56,14 @@ export const authRepository = {
 			.select();
 		return { data, error };
 	},
+
+	getUserProfile: async (userId: string) => {
+		const supabase = await createClient();
+		const { data, error } = await supabase
+			.from("users")
+			.select("*")
+			.eq("id", userId)
+			.single();
+		return { data, error };
+	},
 };
