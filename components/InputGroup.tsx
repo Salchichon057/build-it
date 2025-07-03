@@ -14,6 +14,7 @@ interface InputGroupProps {
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
   placeholder?: string;
   required?: boolean;
@@ -24,6 +25,10 @@ interface InputGroupProps {
   togglePassword?: () => void;
   multiple?: boolean;
   autoComplete?: string;
+  rows?: number;
+  min?: string | number; // <-- Agrega este prop
+  max?: string | number; // <-- Opcional, por si también lo necesitas
+  step?: string | number; // <-- También útil para números
 }
 
 export function InputGroup({
@@ -42,6 +47,10 @@ export function InputGroup({
   togglePassword,
   multiple,
   autoComplete,
+  rows,
+  min, // <-- Agrega aquí
+  max, // <-- Agrega aquí
+  step, // <-- Agrega aquí
 }: InputGroupProps) {
   return (
     <div className={styles.inputGroup}>
@@ -76,6 +85,20 @@ export function InputGroup({
             </option>
           ))}
         </select>
+      ) : type === "textarea" ? (
+        <div className={styles.inputWrapper}>
+          <textarea
+            id={id}
+            name={name}
+            value={value as string}
+            onChange={onChange as React.ChangeEventHandler<HTMLTextAreaElement>}
+            className={`${styles.input} ${error ? styles.inputError : ""}`}
+            placeholder={placeholder}
+            required={required}
+            rows={rows || 4}
+            autoComplete={autoComplete || "off"}
+          />
+        </div>
       ) : (
         <div className={styles.inputWrapper}>
           <Input
@@ -89,8 +112,9 @@ export function InputGroup({
             required={required}
             accept={accept}
             autoComplete={autoComplete || "off"}
-            min={type === "number" ? 0 : undefined}
-            step={type === "number" ? 1 : undefined}
+            min={min} // <-- Pasa el prop min
+            max={max} // <-- Pasa el prop max
+            step={step || (type === "number" ? 1 : undefined)} // <-- Pasa step
           />
           {showTogglePassword && togglePassword && (
             <button

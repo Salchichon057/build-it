@@ -1,10 +1,12 @@
-// /lib/projects/service/projectService.ts
 import { Project } from "../model/project";
 import { projectRepository } from "../repository/projectRepository";
 
 export const projectService = {
     getAll: async (): Promise<Project[]> => {
         return await projectRepository.getAll();
+    },
+    getByClientId: async (client_id: string): Promise<Project[]> => {
+        return await projectRepository.getByClientId(client_id);
     },
     getById: async (id: string): Promise<Project | null> => {
         return await projectRepository.getById(id);

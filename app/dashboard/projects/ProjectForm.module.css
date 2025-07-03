@@ -1,0 +1,86 @@
+.projectForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.projectForm h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    color: #02273A;
+    font-weight: 700;
+    text-align: center;
+}
+
+.projectForm label {
+    display: flex;
+    flex-direction: row;
+    font-size: 1rem;
+    color: #1e293b;
+    gap: 0.3rem;
+}
+
+.projectForm input,
+.projectForm textarea {
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    padding: 0.6rem 0.8rem;
+    font-size: 1rem;
+    background: #f8fafc;
+    color: #02273A;
+    transition: border 0.15s;
+    resize: none;
+}
+
+.projectForm input:focus,
+.projectForm textarea:focus {
+    border-color: #02273A;
+    outline: none;
+}
+
+.projectForm textarea {
+    min-height: 70px;
+    max-height: 180px;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.formActions button {
+    padding: 0.6rem 1.3rem;
+    border-radius: 7px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #e5e7eb;
+    color: #02273A;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+}
+
+.formActions button[type="submit"] {
+    background: #02273A;
+    color: #fff;
+}
+
+.formActions button[type="submit"]:hover {
+    background: #1d4ed8;
+}
+
+.formActions button[type="button"]:hover {
+    background: #f1f5f9;
+}
+
+.error {
+    color: #e11d48;
+    background: #fee2e2;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.98rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}

@@ -18,7 +18,7 @@ export default function Home() {
     <div className={styles.landing}>
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <img src="/logo.svg" alt="Logo de BuildIt" />
+          <img src="/logo.svg" alt="Logo de buildit" />
           <ul className={styles.navLinks}>
             <li>
               <Link href="/">Inicio</Link>
@@ -48,10 +48,10 @@ export default function Home() {
           <div className={styles.heroContent}>
             <img
               src="/max_logo.svg"
-              alt="Logo de BuildIt"
+              alt="Logo de buildit"
               className={styles.logo}
             />
-            <h1>BuildIt</h1>
+            <h1>buildit</h1>
           </div>
           <div className={styles.heroText}>
             <h2>De la Idea a la Obra con los Mejores Profesionales</h2>

@@ -1,0 +1,260 @@
+/* === LAYOUT PRINCIPAL === */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1rem 2rem 1rem;
+    min-height: 60vh;
+    /* Asegura altura mínima */
+}
+
+.pageHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    /* Más espacio entre elementos */
+    margin-bottom: 3rem;
+    /* Más separación del contenido */
+    padding: 1.5rem 0;
+    /* Padding interno para dar más presencia */
+    border-bottom: 1px solid #e2e8f0;
+    /* Línea sutil de separación */
+}
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    letter-spacing: -0.5px;
+    flex: 1;
+    /* Toma todo el espacio disponible */
+    text-align: left;
+    /* Alineado a la izquierda */
+}
+
+.addButton {
+    background: #02273A;
+    color: #fff;
+    border: none;
+    padding: 0.9rem 1.8rem;
+    /* Más padding para mejor presencia */
+    border-radius: 10px;
+    /* Bordes más redondeados */
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-weight: 600;
+    box-shadow: 0 3px 12px rgba(2, 39, 58, 0.2);
+    /* Sombra más pronunciada */
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    /* Evita que el texto se corte */
+    min-width: fit-content;
+    /* Asegura que el botón mantenga su tamaño */
+}
+
+.addButton:hover {
+    background: #34A1DE;
+    transform: translateY(-1px);
+    /* Efecto de elevación */
+    box-shadow: 0 5px 20px rgba(52, 161, 222, 0.3);
+}
+
+.addButton:active {
+    transform: translateY(0);
+}
+
+/* === LISTA DE PROYECTOS === */
+.projectList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+    /* Separación del header */
+}
+
+.empty {
+    color: #64748b;
+    text-align: center;
+    padding: 4rem 2rem;
+    /* Más padding para mejor presencia */
+    font-size: 1.2rem;
+    background: #f8fafc;
+    /* Fondo sutil */
+    border-radius: 12px;
+    border: 2px dashed #cbd5e1;
+    /* Borde punteado */
+    margin-top: 2rem;
+}
+
+.empty::before {
+    content: "📋";
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+/* === RESPONSIVE PRINCIPAL === */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    .pageHeader {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding: 1rem 0;
+    }
+
+    .title {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .addButton {
+        width: 100%;
+        justify-content: center;
+        font-size: 1.05rem;
+        padding: 1rem;
+    }
+
+    .projectList {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem 0.5rem;
+    }
+
+    .title {
+        font-size: 1.6rem;
+    }
+
+    .addButton {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+}
+
+/* === ESTILOS PARA EL MODAL === */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modalContent {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modalClose {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.15s;
+}
+
+.modalClose:hover {
+    background: #f1f5f9;
+    color: #02273A;
+}
+
+/* === ESTILOS PARA EL FORMULARIO === */
+.projectForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+    padding-top: 1rem;
+}
+
+.projectForm h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    color: #02273A;
+    font-weight: 700;
+    text-align: center;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.formActions button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.formActions button[type="button"] {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.formActions button[type="button"]:hover {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.formActions button[type="submit"] {
+    background: #02273A;
+    color: #fff;
+}
+
+.formActions button[type="submit"]:hover {
+    background: #1e3a8a;
+}
+
+.formActions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.error {
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
