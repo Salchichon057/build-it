@@ -65,11 +65,8 @@ export default function ProfessionalsClient({ professionals }: ProfessionalsClie
     setFilteredProfessionals(filtered);
   }, [professionals, searchTerm, specialityFilter, experienceFilter]);
 
-  const handleContact = (professional: Professional) => {
-    // Por ahora, crear un mailto
-    const subject = `Contacto desde BuildIt - ${professional.first_name} ${professional.last_name}`;
-    const body = `Hola ${professional.first_name},\n\nMe interesa contactarte para un proyecto. \n\n¿Podrías proporcionar más información sobre tus servicios?\n\nSaludos.`;
-    window.open(`mailto:${professional.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+  const handleViewProfile = (professionalId: string) => {
+    window.open(`/dashboard/professionals/${professionalId}`, '_blank');
   };
 
   const handleDownloadCV = (cvUrl: string) => {
@@ -175,11 +172,11 @@ export default function ProfessionalsClient({ professionals }: ProfessionalsClie
 
                 <div className={styles.professionalActions}>
                   <button
-                    className={styles.contactButton}
-                    onClick={() => handleContact(professional)}
+                    className={styles.viewProfileButton}
+                    onClick={() => handleViewProfile(professional.id)}
                   >
-                    <i className="fa-solid fa-envelope"></i>
-                    Contactar
+                    <i className="fa-solid fa-user"></i>
+                    Ver Perfil
                   </button>
                   
                   {professional.cv_url && (

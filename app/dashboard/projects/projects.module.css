@@ -609,6 +609,28 @@
   transform: translateY(-1px);
 }
 
+.viewProfileButton {
+  flex: 1;
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.viewProfileButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
 .cvButton {
   background: #f8fafc;
   color: #64748b;

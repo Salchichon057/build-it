@@ -437,6 +437,222 @@
   color: #34A1DE;
 }
 
+/* === PERFIL PÚBLICO === */
+.backButtonContainer {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.backButton {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.backButton:hover {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.contactButton {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.contactButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.skillsSection {
+  margin-bottom: 2rem;
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skillTag {
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid #bfdbfe;
+}
+
+.memberInfo {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+.memberInfo i {
+  color: #34A1DE;
+  margin-right: 0.5rem;
+}
+
+/* === MODAL DE CONTACTO === */
+.contactModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.contactModal {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.contactModalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f3f4f6;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s ease;
+}
+
+.contactModalClose:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.contactModalTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contactModalTitle i {
+  color: #10b981;
+}
+
+.contactModalDescription {
+  color: #6b7280;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.contactOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.whatsappButton,
+.emailButton {
+  background: white;
+  border: 2px solid;
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.whatsappButton {
+  border-color: #25d366;
+  color: #25d366;
+}
+
+.whatsappButton:hover {
+  background: #25d366;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.emailButton {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.emailButton:hover {
+  background: #3b82f6;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.whatsappButton i,
+.emailButton i {
+  font-size: 1.5rem;
+  width: 24px;
+  text-align: center;
+}
+
+.whatsappButton div,
+.emailButton div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.whatsappButton strong,
+.emailButton strong {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.whatsappButton span,
+.emailButton span {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .container {
@@ -471,6 +687,20 @@
 
   .statsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .contactModal {
+    margin: 1rem;
+    width: calc(100% - 2rem);
+  }
+  
+  .contactOptions {
+    gap: 0.75rem;
+  }
+  
+  .whatsappButton,
+  .emailButton {
+    padding: 0.75rem;
   }
 }
 

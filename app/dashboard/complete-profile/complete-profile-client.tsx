@@ -9,6 +9,7 @@ import styles from "./complete-profile.module.css";
 import { createClient } from "@/utils/supabase/client";
 import { updateProfileAction } from "./actions";
 import { validateFile } from "@/lib/validators/fileValidation";
+import { useRouter } from "next/navigation";
 
 interface UpdateProfileResponse {
   error?: string;
@@ -32,6 +33,8 @@ export default function CompleteProfileClient({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isPending, startTransition] = useTransition();
   const [userId, setUserId] = useState<string | null>(null);
+  const [userAccountType, setUserAccountType] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
@@ -39,7 +42,20 @@ export default function CompleteProfileClient({
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (user) setUserId(user.id);
+      if (user) {
+        setUserId(user.id);
+        
+        // Obtener el tipo de cuenta del usuario
+        const { data: profile } = await supabase
+          .from("users")
+          .select("account_type")
+          .eq("id", user.id)
+          .single();
+        
+        if (profile) {
+          setUserAccountType(profile.account_type);
+        }
+      }
     };
     getUser();
   }, []);
@@ -141,7 +157,11 @@ export default function CompleteProfileClient({
       if (response?.error) {
         setErrors({ general: response.error });
       } else {
-        window.location.href = "/dashboard/professionals";
+        // Redirigir según el tipo de cuenta
+        const redirectPath = userAccountType === "client" 
+          ? "/dashboard/professionals" 
+          : "/dashboard/projects/available";
+        router.push(redirectPath);
       }
     });
   };
