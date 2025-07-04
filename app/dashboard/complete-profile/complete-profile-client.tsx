@@ -49,9 +49,9 @@ export default function CompleteProfileClient({
   if (!userId) return <div>Cargando...</div>;
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const target = e.target as HTMLInputElement | HTMLSelectElement;
+    const target = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
     const { name, value } = target;
     const files = (target as HTMLInputElement).files;
 

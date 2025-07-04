@@ -38,7 +38,7 @@ export function ProfessionalFields({
   availableSkills,
 }: ProfessionalFieldsProps) {
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     const input = e.target as HTMLInputElement;

@@ -66,7 +66,7 @@ export default function Navbar() {
           onClick={toggleMenu}
           aria-label="Abrir menú"
         >
-          <span className={styles.hamburger}></span>
+          <i className="fa-solid fa-bars"></i>
         </button>
         <ul className={`${styles.navLinks} ${isOpen ? styles.open : ""}`}>
           {accountType === "client" && (

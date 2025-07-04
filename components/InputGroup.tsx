@@ -29,6 +29,7 @@ interface InputGroupProps {
   min?: string | number; // <-- Agrega este prop
   max?: string | number; // <-- Opcional, por si también lo necesitas
   step?: string | number; // <-- También útil para números
+  disabled?: boolean; // <-- Agrega este prop
 }
 
 export function InputGroup({
@@ -51,6 +52,7 @@ export function InputGroup({
   min, // <-- Agrega aquí
   max, // <-- Agrega aquí
   step, // <-- Agrega aquí
+  disabled, // <-- Agrega aquí
 }: InputGroupProps) {
   return (
     <div className={styles.inputGroup}>
@@ -73,6 +75,7 @@ export function InputGroup({
           className={`${styles.input} ${error ? styles.inputError : ""}`}
           required={required}
           autoComplete={autoComplete || "off"}
+          disabled={disabled}
         >
           {options.map((option, idx) => (
             <option
@@ -97,6 +100,7 @@ export function InputGroup({
             required={required}
             rows={rows || 4}
             autoComplete={autoComplete || "off"}
+            disabled={disabled}
           />
         </div>
       ) : (
@@ -115,6 +119,7 @@ export function InputGroup({
             min={min} // <-- Pasa el prop min
             max={max} // <-- Pasa el prop max
             step={step || (type === "number" ? 1 : undefined)} // <-- Pasa step
+            disabled={disabled} // <-- Pasa disabled
           />
           {showTogglePassword && togglePassword && (
             <button

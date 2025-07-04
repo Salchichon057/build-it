@@ -20,6 +20,8 @@ export function RegisterForm({ signUpAction, message }: RegisterFormProps) {
     email: "",
     account_type: "",
     account_category: "",
+    phone: "",
+    birthdate: "",
     password: "",
     confirmPassword: "",
   });
@@ -70,6 +72,8 @@ export function RegisterForm({ signUpAction, message }: RegisterFormProps) {
         email: formData.get("email")?.toString() || "",
         account_type: formData.get("account_type")?.toString() || "",
         account_category: formData.get("account_category")?.toString() || "",
+        phone: formData.get("phone")?.toString() || "",
+        birthdate: formData.get("birthdate")?.toString() || "",
         password: formData.get("password")?.toString() || "",
         confirmPassword: formData.get("confirmPassword")?.toString() || "",
       })
@@ -93,6 +97,10 @@ export function RegisterForm({ signUpAction, message }: RegisterFormProps) {
             else if (msg.includes("contraseña")) newErrors.password = msg;
             else if (msg.includes("confirmación"))
               newErrors.confirmPassword = msg;
+          } else if (msg.includes("teléfono")) {
+            newErrors.phone = msg;
+          } else if (msg.includes("fecha")) {
+            newErrors.birthdate = msg;
           } else {
             newErrors.general = response.error ?? "";
           }
@@ -107,7 +115,7 @@ export function RegisterForm({ signUpAction, message }: RegisterFormProps) {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -186,6 +194,27 @@ export function RegisterForm({ signUpAction, message }: RegisterFormProps) {
             ]}
             required
             error={errors.account_category}
+          />
+          <InputGroup
+            label="Teléfono"
+            id="phone"
+            name="phone"
+            type="tel"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Ejemplo: +56 9 1234 5678"
+            error={errors.phone}
+            autoComplete="tel"
+          />
+          <InputGroup
+            label="Fecha de Nacimiento"
+            id="birthdate"
+            name="birthdate"
+            type="date"
+            value={formData.birthdate}
+            onChange={handleChange}
+            error={errors.birthdate}
+            autoComplete="bday"
           />
           <InputGroup
             label="Contraseña"

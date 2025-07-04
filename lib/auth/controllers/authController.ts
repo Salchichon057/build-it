@@ -38,14 +38,15 @@ export const authController = {
       first_name: userData.first_name,
       last_name: userData.last_name,
       email: userData.email,
-      birthdate: null,
-      phone: null,
+      birthdate: formData.get("birthdate")?.toString() || null,
+      phone: formData.get("phone")?.toString() || null,
       account_type: userData.account_type as "client" | "professional",
       account_category: userData.account_category as "enterprise" | "person",
       speciality: null,
       cv_url: null,
       profile_image: null,
       address: null,
+      experience_years: null,
     };
 
     const origin = (await headers()).get("origin") || process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -81,80 +82,35 @@ export const authController = {
 
   updateProfile: async (formData: FormData) => {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return encodedRedirect("error", "/complete-profile", "Usuario no autenticado");
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return { error: "Usuario no autenticado" };
     }
 
-    const userId = user.id;
-
-    // 1. Parsear y limpiar los datos del formulario
-    const profileData = {
-      birthdate: formData.get("birthdate")?.toString() || null,
+    const updateData = {
+      first_name: formData.get("first_name")?.toString(),
+      last_name: formData.get("last_name")?.toString(),
       phone: formData.get("phone")?.toString() || null,
+      birthdate: formData.get("birthdate")?.toString() || null,
+      address: formData.get("address")?.toString() || null,
       speciality: formData.get("speciality")?.toString() || null,
       experience_years: formData.get("experience_years")?.toString() || null,
-      skills: formData.getAll("skills").filter((skill): skill is string => typeof skill === "string"),
-      cv_file: formData.get("cv_file") as File | null,
-      profile_image: formData.get("profile_image") as File | null,
-      address: formData.get("address")?.toString() || null,
     };
 
-    // 2. Construir el objeto de actualización
-    let updateData: Partial<User> = {
-      birthdate: profileData.birthdate,
-      phone: profileData.phone,
-      speciality: profileData.speciality,
-      address: profileData.address,
-      experience_years: profileData.experience_years,
-    };
+    // Filtrar campos vacíos o indefinidos
+    const filteredData = Object.fromEntries(
+      Object.entries(updateData).filter(([_, value]) => value !== undefined && value !== "")
+    );
 
-    // 3. Subida de archivos (CV y foto de perfil)
-    try {
-      if (profileData.cv_file && profileData.cv_file.size > 0) {
-        const storedCV = await storageController.uploadCV(profileData.cv_file, userId);
-        updateData.cv_url = storedCV.publicUrl;
-      }
-      if (profileData.profile_image && profileData.profile_image.size > 0) {
-        const storedImg = await storageController.uploadProfileImage(profileData.profile_image, userId);
-        updateData.profile_image = storedImg.publicUrl;
-      }
-    } catch (error: any) {
-      return encodedRedirect("error", "/complete-profile", error.message || "Error al subir archivos");
+    const { error } = await authService.updateProfile(user.id, filteredData);
+
+    if (error) {
+      console.error("Update profile error:", error);
+      return { error: "Error al actualizar el perfil: " + error };
     }
 
-    // 4. Actualizar el usuario en la base de datos
-    const { error: updateError } = await supabase
-      .from("users")
-      .update(updateData)
-      .eq("id", userId);
-
-    if (updateError) {
-      return encodedRedirect("error", "/complete-profile", "Error al actualizar el perfil: " + updateError.message);
-    }
-
-    // 5. Actualizar skills (si corresponde)
-    if (profileData.skills && profileData.skills.length > 0) {
-      // Elimina skills previos (opcional, si quieres que sean reemplazados)
-      await supabase.from("user_skills").delete().eq("user_id", userId);
-
-      // Inserta los nuevos
-      const userSkills = profileData.skills.map((skillId) => ({
-        user_id: userId,
-        skill_id: skillId,
-      }));
-
-      const { error: skillsError } = await supabase
-        .from("user_skills")
-        .insert(userSkills);
-
-      if (skillsError) {
-        return encodedRedirect("error", "/complete-profile", "Error al guardar las habilidades: " + skillsError.message);
-      }
-    }
-
-    // 6. Redirigir a la página de profesionales con mensaje de éxito
-    return encodedRedirect("success", "/dashboard/professionals", "Perfil actualizado correctamente.");
+    return { success: "Perfil actualizado correctamente" };
   },
 
 
