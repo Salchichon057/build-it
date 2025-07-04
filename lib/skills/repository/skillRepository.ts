@@ -37,4 +37,34 @@ export const skillRepository = {
     const { error } = await supabase.from("skills").delete().eq("id", id);
     if (error) throw new Error("Error deleting skill");
   },
+
+  updateUserSkills: async (userId: string, skillIds: string[]): Promise<void> => {
+    const supabase = await createClient();
+    
+    // Primero eliminar todos los skills actuales del usuario
+    const { error: deleteError } = await supabase
+      .from("user_skills")
+      .delete()
+      .eq("users_id", userId);
+    
+    if (deleteError) {
+      throw new Error("Error eliminando skills anteriores: " + deleteError.message);
+    }
+
+    // Si hay skills para agregar, insertarlos
+    if (skillIds.length > 0) {
+      const skillsToInsert = skillIds.map(skillId => ({
+        users_id: userId,
+        skills_id: skillId  // Cambié skill_id por skills_id
+      }));
+
+      const { error: insertError } = await supabase
+        .from("user_skills")
+        .insert(skillsToInsert);
+
+      if (insertError) {
+        throw new Error("Error agregando nuevos skills: " + insertError.message);
+      }
+    }
+  },
 };

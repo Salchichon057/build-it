@@ -1,21 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User } from "@/lib/auth/model/user";
 import { InputGroup } from "@/components/InputGroup";
+import { SkillSelector } from "@/components/SkillSelector";
 import { updateProfileAction } from "./actions";
+import { getSkillsAction } from "@/lib/skills/actions/skillActions";
 import { useProfileStats } from "./hooks/useProfileStats";
 import styles from "./profile.module.css";
 
-interface ProfileClientProps {
-  profile: User;
+interface Skill {
+  id: string;
+  name: string;
 }
 
-export default function ProfileClient({ profile }: ProfileClientProps) {
+interface ProfileClientProps {
+  profile: User;
+  userSkills: Skill[];
+}
+
+export default function ProfileClient({ profile, userSkills }: ProfileClientProps) {
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const { stats, loading: statsLoading } = useProfileStats(profile.id, profile.account_type);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>(userSkills.map(skill => skill.id));
+  const [availableSkills, setAvailableSkills] = useState<Skill[]>([]);
   const [formData, setFormData] = useState({
     first_name: profile.first_name || "",
     last_name: profile.last_name || "",
@@ -26,6 +36,21 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
     speciality: profile.speciality || "",
     experience_years: profile.experience_years || "",
   });
+
+  // Cargar skills disponibles cuando se activa el modo edición
+  useEffect(() => {
+    if (editMode && profile.account_type === "professional" && availableSkills.length === 0) {
+      const loadSkills = async () => {
+        try {
+          const skills = await getSkillsAction();
+          setAvailableSkills(skills);
+        } catch (error) {
+          console.error('Error loading skills:', error);
+        }
+      };
+      loadSkills();
+    }
+  }, [editMode, profile.account_type, availableSkills.length]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -46,6 +71,11 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
         }
       });
 
+      // Agregar skills si es profesional
+      if (profile.account_type === "professional") {
+        formDataToSend.append("skills", JSON.stringify(selectedSkills));
+      }
+
       const result = await updateProfileAction(formDataToSend);
 
       if (result.error) {
@@ -53,8 +83,8 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
       } else {
         setMessage({ type: "success", text: result.success || "Perfil actualizado correctamente" });
         setEditMode(false);
-        // Recargar la página para mostrar los datos actualizados
-        window.location.reload();
+        // En lugar de recargar la página, simplemente salir del modo edición
+        // window.location.reload();
       }
     } catch (error) {
       setMessage({ type: "error", text: "Error inesperado al actualizar el perfil" });
@@ -75,6 +105,7 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
       speciality: profile.speciality || "",
       experience_years: profile.experience_years || "",
     });
+    setSelectedSkills(userSkills.map(skill => skill.id));
     setEditMode(false);
     setMessage(null);
   };
@@ -187,6 +218,25 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
             </div>
           )}
 
+          {/* Sección de Habilidades para profesionales */}
+          {profile.account_type === "professional" && !editMode && userSkills.length > 0 && (
+            <>
+              <h2 className={styles.sectionTitle}>
+                <i className="fa-solid fa-tools"></i>
+                Habilidades
+              </h2>
+              <div className={styles.skillsSection}>
+                <div className={styles.skillsList}>
+                  {userSkills.map((skill) => (
+                    <span key={skill.id} className={styles.skillTag}>
+                      {skill.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
           {/* Formulario de edición */}
           {editMode && (
             <>
@@ -290,6 +340,38 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
                   </>
                 )}
               </div>
+
+              {/* Selector de habilidades para profesionales */}
+              {profile.account_type === "professional" && (
+                <div className={styles.skillsFormSection}>
+                  <h3 className={styles.skillsFormTitle}>
+                    <i className="fa-solid fa-tools"></i>
+                    Habilidades
+                  </h3>
+                  {availableSkills.length > 0 ? (
+                    <SkillSelector
+                      skills={selectedSkills}
+                      availableSkills={availableSkills}
+                      onSkillSelect={(skillId: string) => {
+                        if (!selectedSkills.includes(skillId)) {
+                          setSelectedSkills([...selectedSkills, skillId]);
+                        }
+                      }}
+                      onSkillRemove={(skillId: string) => {
+                        setSelectedSkills(selectedSkills.filter(id => id !== skillId));
+                      }}
+                      maxSkills={10}
+                      errors={{}}
+                      setErrors={() => {}}
+                    />
+                  ) : (
+                    <div className={styles.skillsLoading}>
+                      <i className="fa-solid fa-spinner fa-spin"></i>
+                      Cargando habilidades...
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className={styles.formActions}>
                 <button

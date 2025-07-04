@@ -211,6 +211,13 @@ export default function CompleteProfileClient({
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
+          {/* Input hidden para enviar los skills */}
+          <input 
+            type="hidden" 
+            name="skills" 
+            value={JSON.stringify(formData.skills)} 
+          />
+          
           {step === 1 && (
             <div className={styles.stepContent}>
               <h2 className={styles.stepTitle}>

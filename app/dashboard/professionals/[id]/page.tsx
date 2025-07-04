@@ -58,12 +58,12 @@ export default async function PublicProfilePage({ params }: PageProps) {
   const { data: skills } = await supabase
     .from("user_skills")
     .select(`
-      skills:skill_id (
+      skills:skills_id (
         id,
         name
       )
     `)
-    .eq("user_id", params.id);
+    .eq("users_id", params.id);
 
   const professionalSkills = (skills?.map(skill => skill.skills).filter(Boolean).flat()) || [];
 

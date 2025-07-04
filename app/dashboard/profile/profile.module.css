@@ -653,6 +653,37 @@
   opacity: 0.8;
 }
 
+/* === SKILLS FORM SECTION === */
+.skillsFormSection {
+  margin-bottom: 2rem;
+}
+
+.skillsFormTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #02273A;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skillsFormTitle i {
+  color: #34A1DE;
+}
+
+.skillsLoading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.skillsLoading i {
+  color: #34A1DE;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .container {

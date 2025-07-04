@@ -25,5 +25,21 @@ export default async function ProfilePage() {
     return redirect("/dashboard?error=Perfil no encontrado");
   }
 
-  return <ProfileClient profile={profile} />;
+  // Obtener skills del usuario si es profesional
+  let userSkills: any[] = [];
+  if (profile.account_type === "professional") {
+    const { data: skills } = await supabase
+      .from("user_skills")
+      .select(`
+        skills:skills_id (
+          id,
+          name
+        )
+      `)
+      .eq("users_id", user.id);
+
+    userSkills = (skills?.map(skill => skill.skills).filter(Boolean).flat()) || [];
+  }
+
+  return <ProfileClient profile={profile} userSkills={userSkills} />;
 }

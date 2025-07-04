@@ -15,4 +15,7 @@ export const skillService = {
   deleteSkill: async (id: string): Promise<void> => {
     return await skillRepository.deleteSkill(id);
   },
+  updateUserSkills: async (userId: string, skillIds: string[]): Promise<void> => {
+    return await skillRepository.updateUserSkills(userId, skillIds);
+  },
 };

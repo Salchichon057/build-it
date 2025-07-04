@@ -146,6 +146,23 @@ export const authController = {
       return { error: "Error al actualizar el perfil: " + error };
     }
 
+    // Manejar actualización de skills si es profesional
+    const skillsData = formData.get("skills")?.toString();
+    if (skillsData) {
+      try {
+        const selectedSkillIds = JSON.parse(skillsData);
+        console.log("Updating skills:", selectedSkillIds);
+        
+        // Importar skillService dinámicamente para evitar problemas de dependencias circulares
+        const { skillService } = await import("@/lib/skills/service/skillService");
+        await skillService.updateUserSkills(user.id, selectedSkillIds);
+        console.log("Skills updated successfully");
+      } catch (skillError) {
+        console.error("Error updating skills:", skillError);
+        return { error: "Error al actualizar las habilidades" };
+      }
+    }
+
     return { success: "Perfil actualizado correctamente" };
   },
 
