@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import PostulationsClient from "./PostulationsClient";
+import PostulationsClient from "@/components/dashboard/postulations/PostulationsClient";
 import { getMyPostulationsAction } from "@/lib/postulations/actions/postulationActions";
 
 export default async function PostulationsPage() {

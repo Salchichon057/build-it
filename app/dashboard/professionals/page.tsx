@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import ProfessionalsClient from "./ProfessionalsClient";
+import ProfessionalsClient from "@/components/dashboard/professionals/ProfessionalsClient";
 
 export default async function ProfessionalsPage() {
   const supabase = await createClient();

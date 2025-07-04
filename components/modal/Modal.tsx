@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, useEffect } from "react";
-import styles from "@/app/dashboard/projects/projects.module.css";
+import styles from "@/styles/dashboard/projects.module.css";
 
 interface ModalProps {
   open: boolean;

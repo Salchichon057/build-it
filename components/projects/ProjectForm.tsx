@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { projectSchema } from "@/lib/validators/projectSchema";
 import { z } from "zod";
-import styles from "@/app/dashboard/projects/projects.module.css";
+import styles from "@/styles/dashboard/projects.module.css";
 import { InputGroup } from "../InputGroup";
 import { getCategoriesAction } from "@/lib/categories/actions/categoryActions";
 

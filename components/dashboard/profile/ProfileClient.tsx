@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { User } from "@/lib/auth/model/user";
 import { InputGroup } from "@/components/InputGroup";
 import { SkillSelector } from "@/components/SkillSelector";
-import { updateProfileAction } from "./actions";
+import { updateProfileAction } from "@/app/dashboard/profile/actions";
 import { getSkillsAction } from "@/lib/skills/actions/skillActions";
-import { useProfileStats } from "./hooks/useProfileStats";
+import { useProfileStats } from "@/app/dashboard/profile/hooks/useProfileStats";
 import styles from "@/styles/dashboard/profile.module.css";
 
 interface Skill {

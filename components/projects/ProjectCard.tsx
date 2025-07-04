@@ -102,7 +102,6 @@ export default function ProjectCard({ project, onDeleted }: ProjectCardProps) {
           </div>
         </div>
       )}
-      ;
     </div>
   );
 }

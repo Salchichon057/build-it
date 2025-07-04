@@ -1,5 +1,5 @@
 import { getMyProjectsAction } from "./actions";
-import ProjectsPageClient from "./ProjectsPageClient";
+import ProjectsPageClient from "@/components/dashboard/projects/ProjectsPageClient";
 import { Project } from "@/lib/projects/model/project";
 
 export default async function ProjectsPage() {

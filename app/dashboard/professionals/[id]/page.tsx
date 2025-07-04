@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect, notFound } from "next/navigation";
-import PublicProfileClient from "./PublicProfileClient";
+import PublicProfileClient from "@/components/dashboard/professionals/PublicProfileClient";
 
 interface PageProps {
   params: Promise<{

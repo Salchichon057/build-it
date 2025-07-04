@@ -5,7 +5,7 @@ import { Skill } from "@/lib/skills/model/skill";
 import { InputGroup } from "@/components/InputGroup";
 import { SubmitButton } from "@/components/submit-button";
 import { SkillSelector } from "@/components/SkillSelector";
-import styles from "./complete-profile.module.css";
+import styles from "@/styles/dashboard/complete-profile.module.css";
 import { createClient } from "@/utils/supabase/client";
 import { updateProfileAction } from "./actions";
 import { validateFile } from "@/lib/validators/fileValidation";
