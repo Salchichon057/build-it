@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
+import ProfessionalsClient from "./ProfessionalsClient";
 
 export default async function ProfessionalsPage() {
   const supabase = await createClient();
@@ -14,26 +14,39 @@ export default async function ProfessionalsPage() {
     return redirect("/sign-in");
   }
 
-  // Consulta el perfil en la tabla users
-  const { data: profile, error } = await supabase
+  // Verificar que el usuario sea cliente
+  const { data: profile } = await supabase
     .from("users")
-    .select("*")
+    .select("account_type")
     .eq("id", user.id)
     .single();
 
-  if (error || !profile) {
-    return encodedRedirect("error", "/dashboard", "Perfil no encontrado");
+  if (!profile || profile.account_type !== "client") {
+    return redirect("/dashboard?error=Esta sección es solo para clientes");
   }
 
-  if (profile.account_type !== "professional") {
-    return encodedRedirect("error", "/dashboard", "Acceso no autorizado");
+  // Obtener todos los profesionales con sus habilidades
+  const { data: professionals, error } = await supabase
+    .from("users")
+    .select(`
+      id,
+      first_name,
+      last_name,
+      email,
+      profile_image,
+      speciality,
+      experience_years,
+      address,
+      cv_url,
+      created_at
+    `)
+    .eq("account_type", "professional")
+    .not("speciality", "is", null) // Solo profesionales que han completado su perfil
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching professionals:", error);
   }
 
-  return (
-    <div>
-      <h1>
-        Bienvenido, {profile.first_name} {profile.last_name}
-      </h1>
-    </div>
-  );
+  return <ProfessionalsClient professionals={professionals || []} />;
 }

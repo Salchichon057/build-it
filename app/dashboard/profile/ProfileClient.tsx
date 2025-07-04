@@ -4,6 +4,7 @@ import { useState } from "react";
 import { User } from "@/lib/auth/model/user";
 import { InputGroup } from "@/components/InputGroup";
 import { updateProfileAction } from "./actions";
+import { useProfileStats } from "./hooks/useProfileStats";
 import styles from "./profile.module.css";
 
 interface ProfileClientProps {
@@ -14,6 +15,7 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const { stats, loading: statsLoading } = useProfileStats(profile.id, profile.account_type);
   const [formData, setFormData] = useState({
     first_name: profile.first_name || "",
     last_name: profile.last_name || "",
@@ -123,15 +125,6 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
               <i className={editMode ? "fa-solid fa-xmark" : "fa-solid fa-pencil"}></i>
               {editMode ? "Cancelar" : "Editar"}
             </button>
-            {profile.account_type === "professional" && profile.cv_url && (
-              <button
-                className={styles.downloadButton}
-                onClick={handleDownloadCV}
-              >
-                <i className="fa-solid fa-download"></i>
-                Descargar CV
-              </button>
-            )}
           </div>
         </div>
 
@@ -145,13 +138,6 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
           {!editMode && (
             <div className={styles.aboutSection}>
               <div className={styles.aboutGrid}>
-                <div className={styles.aboutItem}>
-                  <i className="fa-solid fa-briefcase"></i>
-                  <div>
-                    <strong>Rol:</strong>
-                    <span>{profile.account_type === "client" ? "Cliente" : "Profesional"}</span>
-                  </div>
-                </div>
                 {profile.speciality && (
                   <div className={styles.aboutItem}>
                     <i className="fa-solid fa-helmet-safety"></i>
@@ -382,19 +368,24 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
             Estadísticas
           </h2>
           <div className={styles.statsGrid}>
-            {profile.account_type === "client" ? (
+            {statsLoading ? (
+              <div className={styles.statsLoading}>
+                <i className="fa-solid fa-spinner fa-spin"></i>
+                Cargando estadísticas...
+              </div>
+            ) : profile.account_type === "client" ? (
               <>
                 <div className={styles.statCard}>
                   <i className="fa-solid fa-project-diagram"></i>
                   <div>
-                    <span className={styles.statNumber}>0</span>
+                    <span className={styles.statNumber}>{stats.activeProjects}</span>
                     <span className={styles.statLabel}>Proyectos Activos</span>
                   </div>
                 </div>
                 <div className={styles.statCard}>
                   <i className="fa-solid fa-check-circle"></i>
                   <div>
-                    <span className={styles.statNumber}>0</span>
+                    <span className={styles.statNumber}>{stats.completedProjects}</span>
                     <span className={styles.statLabel}>Proyectos Completados</span>
                   </div>
                 </div>
@@ -404,15 +395,22 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
                 <div className={styles.statCard}>
                   <i className="fa-solid fa-handshake"></i>
                   <div>
-                    <span className={styles.statNumber}>0</span>
+                    <span className={styles.statNumber}>{stats.activePostulations || 0}</span>
                     <span className={styles.statLabel}>Postulaciones Activas</span>
+                  </div>
+                </div>
+                <div className={styles.statCard}>
+                  <i className="fa-solid fa-check-circle"></i>
+                  <div>
+                    <span className={styles.statNumber}>{stats.completedProjects}</span>
+                    <span className={styles.statLabel}>Proyectos Completados</span>
                   </div>
                 </div>
                 <div className={styles.statCard}>
                   <i className="fa-solid fa-star"></i>
                   <div>
-                    <span className={styles.statNumber}>0</span>
-                    <span className={styles.statLabel}>Proyectos Completados</span>
+                    <span className={styles.statNumber}>{stats.rating?.toFixed(1) || "5.0"}</span>
+                    <span className={styles.statLabel}>Calificación Promedio</span>
                   </div>
                 </div>
               </>

@@ -420,6 +420,23 @@
   box-shadow: 0 4px 15px rgba(52, 161, 222, 0.3);
 }
 
+/* === ESTADÍSTICAS LOADING === */
+.statsLoading {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.statsLoading i {
+  font-size: 1.2rem;
+  color: #34A1DE;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .container {
