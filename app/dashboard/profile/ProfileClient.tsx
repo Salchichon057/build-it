@@ -136,136 +136,204 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
         </div>
 
         <div className={styles.formSection}>
+          {/* Sección Acerca de estilo LinkedIn */}
           <h2 className={styles.sectionTitle}>
             <i className="fa-solid fa-user"></i>
-            Información Personal
+            Acerca de
           </h2>
           
-          {message && (
-            <div className={`${styles.message} ${styles[message.type]}`}>
-              <i className={message.type === "success" ? "fa-solid fa-check-circle" : "fa-solid fa-exclamation-triangle"}></i>
-              {message.text}
+          {!editMode && (
+            <div className={styles.aboutSection}>
+              <div className={styles.aboutGrid}>
+                <div className={styles.aboutItem}>
+                  <i className="fa-solid fa-briefcase"></i>
+                  <div>
+                    <strong>Rol:</strong>
+                    <span>{profile.account_type === "client" ? "Cliente" : "Profesional"}</span>
+                  </div>
+                </div>
+                {profile.speciality && (
+                  <div className={styles.aboutItem}>
+                    <i className="fa-solid fa-helmet-safety"></i>
+                    <div>
+                      <strong>Especialidad:</strong>
+                      <span>{profile.speciality}</span>
+                    </div>
+                  </div>
+                )}
+                {profile.experience_years && (
+                  <div className={styles.aboutItem}>
+                    <i className="fa-solid fa-calendar-days"></i>
+                    <div>
+                      <strong>Experiencia:</strong>
+                      <span>{profile.experience_years} años</span>
+                    </div>
+                  </div>
+                )}
+                {profile.address && (
+                  <div className={styles.aboutItem}>
+                    <i className="fa-solid fa-location-dot"></i>
+                    <div>
+                      <strong>Ubicación:</strong>
+                      <span>{profile.address}</span>
+                    </div>
+                  </div>
+                )}
+                {profile.phone && (
+                  <div className={styles.aboutItem}>
+                    <i className="fa-solid fa-phone"></i>
+                    <div>
+                      <strong>Teléfono:</strong>
+                      <span>{profile.phone}</span>
+                    </div>
+                  </div>
+                )}
+                {profile.birthdate && (
+                  <div className={styles.aboutItem}>
+                    <i className="fa-solid fa-cake-candles"></i>
+                    <div>
+                      <strong>Fecha de nacimiento:</strong>
+                      <span>{new Date(profile.birthdate).toLocaleDateString('es-ES')}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
-          
-          <div className={styles.formGrid}>
-            <InputGroup
-              label="Nombre"
-              id="first_name"
-              name="first_name"
-              type="text"
-              value={formData.first_name}
-              onChange={handleChange}
-              required
-              disabled={!editMode}
-            />
-            
-            <InputGroup
-              label="Apellido"
-              id="last_name"
-              name="last_name"
-              type="text"
-              value={formData.last_name}
-              onChange={handleChange}
-              required
-              disabled={!editMode}
-            />
-            
-            <InputGroup
-              label="Email"
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              disabled={true} // Email no se puede cambiar
-            />
-            
-            <InputGroup
-              label="Teléfono"
-              id="phone"
-              name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleChange}
-              disabled={!editMode}
-            />
-            
-            <InputGroup
-              label="Fecha de Nacimiento"
-              id="birthdate"
-              name="birthdate"
-              type="date"
-              value={formData.birthdate}
-              onChange={handleChange}
-              disabled={!editMode}
-            />
-            
-            <InputGroup
-              label="Dirección"
-              id="address"
-              name="address"
-              type="text"
-              value={formData.address}
-              onChange={handleChange}
-              disabled={!editMode}
-            />
-            
-            {profile.account_type === "professional" && (
-              <>
-                <InputGroup
-                  label="Especialidad"
-                  id="speciality"
-                  name="speciality"
-                  type="text"
-                  value={formData.speciality}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-                <InputGroup
-                  label="Años de Experiencia"
-                  id="experience_years"
-                  name="experience_years"
-                  type="number"
-                  value={formData.experience_years}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                  min={0}
-                />
-              </>
-            )}
-          </div>
 
+          {/* Formulario de edición */}
           {editMode && (
-            <div className={styles.formActions}>
-              <button
-                className={styles.cancelButton}
-                onClick={handleCancel}
-                type="button"
-                disabled={loading}
-              >
-                Cancelar
-              </button>
-              <button
-                className={styles.saveButton}
-                onClick={handleSave}
-                type="button"
-                disabled={loading}
-              >
-                {loading ? (
+            <>
+              <h3 className={styles.editTitle}>
+                <i className="fa-solid fa-pencil"></i>
+                Editar Información Personal
+              </h3>
+              
+              {message && (
+                <div className={`${styles.message} ${styles[message.type]}`}>
+                  <i className={message.type === "success" ? "fa-solid fa-check-circle" : "fa-solid fa-exclamation-triangle"}></i>
+                  {message.text}
+                </div>
+              )}
+              
+              <div className={styles.formGrid}>
+                <InputGroup
+                  label="Nombre"
+                  id="first_name"
+                  name="first_name"
+                  type="text"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  required
+                  disabled={!editMode}
+                />
+                
+                <InputGroup
+                  label="Apellido"
+                  id="last_name"
+                  name="last_name"
+                  type="text"
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  required
+                  disabled={!editMode}
+                />
+                
+                <InputGroup
+                  label="Email"
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  disabled={true} // Email no se puede cambiar
+                />
+                
+                <InputGroup
+                  label="Teléfono"
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  disabled={!editMode}
+                />
+                
+                <InputGroup
+                  label="Fecha de Nacimiento"
+                  id="birthdate"
+                  name="birthdate"
+                  type="date"
+                  value={formData.birthdate}
+                  onChange={handleChange}
+                  disabled={!editMode}
+                />
+                
+                <InputGroup
+                  label="Dirección"
+                  id="address"
+                  name="address"
+                  type="text"
+                  value={formData.address}
+                  onChange={handleChange}
+                  disabled={!editMode}
+                />
+                
+                {profile.account_type === "professional" && (
                   <>
-                    <i className="fa-solid fa-spinner fa-spin"></i>
-                    Guardando...
-                  </>
-                ) : (
-                  <>
-                    <i className="fa-solid fa-save"></i>
-                    Guardar Cambios
+                    <InputGroup
+                      label="Especialidad"
+                      id="speciality"
+                      name="speciality"
+                      type="text"
+                      value={formData.speciality}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                    <InputGroup
+                      label="Años de Experiencia"
+                      id="experience_years"
+                      name="experience_years"
+                      type="number"
+                      value={formData.experience_years}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                      min={0}
+                    />
                   </>
                 )}
-              </button>
-            </div>
+              </div>
+
+              <div className={styles.formActions}>
+                <button
+                  className={styles.cancelButton}
+                  onClick={handleCancel}
+                  type="button"
+                  disabled={loading}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className={styles.saveButton}
+                  onClick={handleSave}
+                  type="button"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <i className="fa-solid fa-spinner fa-spin"></i>
+                      Guardando...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-save"></i>
+                      Guardar Cambios
+                    </>
+                  )}
+                </button>
+              </div>
+            </>
           )}
         </div>
 
@@ -292,9 +360,17 @@ export default function ProfileClient({ profile }: ProfileClientProps) {
               </div>
             ) : (
               <div className={styles.noCv}>
-                <i className="fa-solid fa-info-circle"></i>
-                <span>No has subido tu CV. </span>
-                <a href="/dashboard/complete-profile">Completar perfil</a>
+                <div className={styles.noCvContent}>
+                  <i className="fa-solid fa-info-circle"></i>
+                  <div>
+                    <p>No has subido tu CV todavía</p>
+                    <p className={styles.noCvSubtext}>Completa tu perfil para mostrar tu experiencia profesional</p>
+                  </div>
+                </div>
+                <a href="/dashboard/complete-profile" className={styles.completeProfileButton}>
+                  <i className="fa-solid fa-plus-circle"></i>
+                  Completar Perfil
+                </a>
               </div>
             )}
           </div>

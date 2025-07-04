@@ -88,6 +88,38 @@ export const authController = {
       return { error: "Usuario no autenticado" };
     }
 
+    let cvUrl = null;
+    let profileImageUrl = null;
+
+    try {
+      // Verificar que los buckets existan antes de subir archivos
+      const { ensureStorageBuckets } = await import("@/lib/storage/utils/bucketSetup");
+      await ensureStorageBuckets();
+
+      // Manejar subida de CV
+      const cvFile = formData.get("cv_file") as File;
+      if (cvFile && cvFile.size > 0) {
+        console.log("Uploading CV file:", cvFile.name);
+        const { storageService } = await import("@/lib/storage/service/storageService");
+        const uploadedCV = await storageService.uploadCV(cvFile, user.id);
+        cvUrl = uploadedCV.publicUrl;
+        console.log("CV uploaded successfully:", cvUrl);
+      }
+
+      // Manejar subida de imagen de perfil
+      const profileImageFile = formData.get("profile_image") as File;
+      if (profileImageFile && profileImageFile.size > 0) {
+        console.log("Uploading profile image:", profileImageFile.name);
+        const { storageService } = await import("@/lib/storage/service/storageService");
+        const uploadedImage = await storageService.uploadProfileImage(profileImageFile, user.id);
+        profileImageUrl = uploadedImage.publicUrl;
+        console.log("Profile image uploaded successfully:", profileImageUrl);
+      }
+    } catch (storageError: any) {
+      console.error("Storage error:", storageError);
+      return { error: "Error al subir archivos: " + storageError.message };
+    }
+
     const updateData = {
       first_name: formData.get("first_name")?.toString(),
       last_name: formData.get("last_name")?.toString(),
@@ -96,12 +128,16 @@ export const authController = {
       address: formData.get("address")?.toString() || null,
       speciality: formData.get("speciality")?.toString() || null,
       experience_years: formData.get("experience_years")?.toString() || null,
+      ...(cvUrl && { cv_url: cvUrl }),
+      ...(profileImageUrl && { profile_image: profileImageUrl }),
     };
 
     // Filtrar campos vacíos o indefinidos
     const filteredData = Object.fromEntries(
       Object.entries(updateData).filter(([_, value]) => value !== undefined && value !== "")
     );
+
+    console.log("Updating profile with data:", filteredData);
 
     const { error } = await authService.updateProfile(user.id, filteredData);
 

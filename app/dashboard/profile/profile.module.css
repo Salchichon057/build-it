@@ -195,6 +195,72 @@
   transform: translateY(-1px);
 }
 
+/* === SECCIÓN ACERCA DE === */
+.aboutSection {
+  margin: 1.5rem 0;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.aboutItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  border-left: 4px solid #34A1DE;
+  transition: all 0.2s ease;
+}
+
+.aboutItem:hover {
+  background: #f1f5f9;
+  transform: translateX(2px);
+}
+
+.aboutItem i {
+  color: #34A1DE;
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.aboutItem > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.aboutItem strong {
+  color: #02273A;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.aboutItem span {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.editTitle {
+  color: #02273A;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editTitle i {
+  color: #34A1DE;
+  font-size: 1rem;
+}
+
 /* === ESTADÍSTICAS === */
 .statsGrid {
   display: grid;
@@ -247,6 +313,111 @@
   font-size: 0.9rem;
   color: #64748b;
   font-weight: 500;
+}
+
+/* === SECCIÓN DE CV === */
+.cvSection {
+  background: #fff;
+  border-radius: 15px;
+  border: 1px solid #e2e8f0;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.cvItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  border-left: 4px solid #10b981;
+}
+
+.cvInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #02273A;
+}
+
+.cvInfo i {
+  color: #dc2626;
+  font-size: 1.5rem;
+}
+
+.downloadButton {
+  background: #34A1DE;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.downloadButton:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.noCv {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%);
+  border-radius: 12px;
+  border: 1px solid #f59e0b;
+  text-align: center;
+}
+
+.noCvContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.noCvContent i {
+  color: #f59e0b;
+  font-size: 2rem;
+}
+
+.noCvContent p {
+  margin: 0;
+  color: #02273A;
+  font-weight: 500;
+}
+
+.noCvSubtext {
+  color: #64748b !important;
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+}
+
+.completeProfileButton {
+  background: #02273A;
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: center;
+}
+
+.completeProfileButton:hover {
+  background: #34A1DE;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(52, 161, 222, 0.3);
 }
 
 /* === RESPONSIVE === */
