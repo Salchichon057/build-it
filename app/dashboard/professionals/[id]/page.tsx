@@ -3,12 +3,13 @@ import { redirect, notFound } from "next/navigation";
 import PublicProfileClient from "./PublicProfileClient";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function PublicProfilePage({ params }: PageProps) {
+  const { id } = await params;
   const supabase = await createClient();
 
   const {
@@ -47,7 +48,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
       cv_url,
       created_at
     `)
-    .eq("id", params.id)
+    .eq("id", id)
     .eq("account_type", "professional")
     .single();
 
@@ -63,7 +64,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
         name
       )
     `)
-    .eq("users_id", params.id);
+    .eq("users_id", id);
 
   const professionalSkills = (skills?.map(skill => skill.skills).filter(Boolean).flat()) || [];
 

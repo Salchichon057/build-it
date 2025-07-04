@@ -294,3 +294,146 @@
     color: #dc2626;
     margin-top: 0.25rem;
 }
+
+/* === ESTILOS PARA CATEGORY SELECTOR === */
+.selectedItems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    min-height: 1.5rem;
+}
+
+.selectedItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: #02273A;
+    color: #ffffff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.removeButton {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.25rem;
+    font-size: 0.75rem;
+}
+
+.removeButton:hover {
+    color: #fecaca;
+}
+
+.placeholder {
+    color: #6b7280;
+    font-style: italic;
+    font-size: 0.875rem;
+}
+
+.selectorContainer {
+    position: relative;
+}
+
+.selectorButton {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 0.875rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.selectorButton:hover {
+    background-color: #e5e7eb;
+    border-color: #02273A;
+}
+
+.selectorButton:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+    color: #6b7280;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.searchContainer {
+    position: relative;
+    padding: 0.5rem;
+}
+
+.searchContainer i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.itemsList {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.item {
+    width: 100%;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.item:hover {
+    background-color: #f3f4f6;
+}
+
+.noResults {
+    padding: 0.75rem;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.counter {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-align: right;
+}

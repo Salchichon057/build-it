@@ -54,12 +54,6 @@ export default function PublicProfileClient({ professional, skills }: PublicProf
     }
   };
 
-  const handleEmailContact = () => {
-    const subject = `Contacto desde BuildIt - ${professional.first_name} ${professional.last_name}`;
-    const body = `Hola ${professional.first_name},\n\nMe interesa contactarte para un proyecto.\n\n¿Podrías proporcionar más información sobre tus servicios?\n\nSaludos.`;
-    window.open(`mailto:${professional.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.profileCard}>
@@ -237,7 +231,7 @@ export default function PublicProfileClient({ professional, skills }: PublicProf
             </p>
             
             <div className={styles.contactOptions}>
-              {professional.phone && (
+              {professional.phone ? (
                 <button
                   className={styles.whatsappButton}
                   onClick={() => {
@@ -251,21 +245,12 @@ export default function PublicProfileClient({ professional, skills }: PublicProf
                     <span>Contacto directo e inmediato</span>
                   </div>
                 </button>
-              )}
-              
-              <button
-                className={styles.emailButton}
-                onClick={() => {
-                  handleEmailContact();
-                  setShowContactModal(false);
-                }}
-              >
-                <i className="fa-solid fa-envelope"></i>
-                <div>
-                  <strong>Correo Electrónico</strong>
-                  <span>Contacto formal por email</span>
+              ) : (
+                <div className={styles.noContactInfo}>
+                  <i className="fa-solid fa-phone-slash"></i>
+                  <p>Este profesional no ha proporcionado información de contacto.</p>
                 </div>
-              </button>
+              )}
             </div>
           </div>
         </div>

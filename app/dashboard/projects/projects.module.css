@@ -497,6 +497,43 @@
     text-align: center;
 }
 
+/* === ESTILOS PARA IMAGEN EN FORMULARIO === */
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup .label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+.imagePreview {
+    margin-top: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.previewImage {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.fieldError {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
 /* === PROFESIONALES === */
 .professionalsList {
   margin-top: 1rem;

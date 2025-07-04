@@ -11,4 +11,6 @@ export interface Project {
     created_at: string;
     updated_at?: string;
     skills?: string[];
+    image_url?: string;
+    category_id?: string; // Relación directa con una categoría principal
 }

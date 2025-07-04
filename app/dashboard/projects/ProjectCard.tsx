@@ -23,6 +23,17 @@ export default function ProjectCard({ project, onDeleted }: ProjectCardProps) {
 
   return (
     <div className={styles.projectCard}>
+      {/* Imagen del proyecto */}
+      {project.image_url && (
+        <div className={styles.cardImage}>
+          <img 
+            src={project.image_url} 
+            alt={project.title}
+            className={styles.projectImage}
+          />
+        </div>
+      )}
+      
       <div className={styles.cardHeader}>
         <div className={styles.cardIcon}>
           <i className="fa-solid fa-diagram-project"></i>

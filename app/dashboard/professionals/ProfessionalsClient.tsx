@@ -66,7 +66,7 @@ export default function ProfessionalsClient({ professionals }: ProfessionalsClie
   }, [professionals, searchTerm, specialityFilter, experienceFilter]);
 
   const handleViewProfile = (professionalId: string) => {
-    window.open(`/dashboard/professionals/${professionalId}`, '_blank');
+    window.location.href = `/dashboard/professionals/${professionalId}`;
   };
 
   const handleDownloadCV = (cvUrl: string) => {

@@ -40,6 +40,24 @@ export async function ensureStorageBuckets() {
       console.log('Profile-image bucket already exists');
     }
 
+    // Verificar/crear bucket de project images
+    const { data: projectImagesExists, error: projectImagesError } = await supabase.storage.getBucket('projects');
+    if (projectImagesError && projectImagesError.message === 'The resource was not found') {
+      console.log('Creating projects bucket...');
+      const { error: createProjectImagesError } = await supabase.storage.createBucket('projects', {
+        public: true,
+        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
+        fileSizeLimit: 5 * 1024 * 1024 // 5MB
+      });
+      if (createProjectImagesError) {
+        console.error('Error creating projects bucket:', createProjectImagesError);
+      } else {
+        console.log('Projects bucket created successfully');
+      }
+    } else if (!projectImagesError) {
+      console.log('Projects bucket already exists');
+    }
+
     return { success: true };
   } catch (error) {
     console.error('Error checking/creating buckets:', error);
