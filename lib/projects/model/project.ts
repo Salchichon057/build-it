@@ -3,7 +3,7 @@ export interface Project {
     title: string;
     description: string;
     users_id: string;
-    status: "open" | "in_progress" | "completed" | "cancelled";
+    status: "open" | "in_progress" | "completed" | "cancelled" | "closed";
     budget?: number;
     location?: string;
     start_date?: string;

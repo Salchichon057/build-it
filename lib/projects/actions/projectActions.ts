@@ -1,6 +1,7 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
 import { projectService } from "../service/projectService";
+import { notificationService } from "@/lib/notifications/service/notificationService";
 import { revalidatePath } from "next/cache";
 import { projectSchema } from "@/lib/validators/projectSchema";
 
@@ -40,9 +41,18 @@ export async function createProjectAction(formData: FormData) {
         throw new Error(result.error.errors[0]?.message || "Datos inválidos");
     }
 
-    await projectService.create(result.data);
+    const createdProject = await projectService.create(result.data);
+
+    // Crear notificación de bienvenida para el cliente
+    await notificationService.create({
+        user_id: user.id,
+        type: "project_update",
+        title: "Proyecto creado exitosamente",
+        message: `Tu proyecto "${result.data.title}" ha sido publicado. Los profesionales podrán verlo y postularse. Te notificaremos cuando recibas postulaciones.`
+    });
 
     revalidatePath("/dashboard/projects");
+    return createdProject;
 }
 
 export async function updateProjectAction(

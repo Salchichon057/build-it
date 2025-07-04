@@ -1,11 +1,31 @@
 // /lib/notifications/actions/notificationActions.ts
 "use server";
+import { createClient } from "@/utils/supabase/server";
 import { notificationService } from "../service/notificationService";
 import { revalidatePath } from "next/cache";
 
 export async function getNotificationsAction(userId: string) {
     if (!userId) throw new Error("El userId es requerido");
     return await notificationService.getAllForUser(userId);
+}
+
+export async function getMyNotificationsAction() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) throw new Error("Usuario no autenticado");
+    
+    return await notificationService.getAllForUser(user.id);
+}
+
+export async function getUnreadCountAction() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) return 0;
+    
+    const notifications = await notificationService.getAllForUser(user.id);
+    return notifications.filter(n => !n.read).length;
 }
 
 export async function markNotificationAsReadAction(id: string) {

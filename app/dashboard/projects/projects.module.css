@@ -883,3 +883,97 @@
     gap: 0.5rem;
   }
 }
+
+/* === ESTILOS PARA NOTIFICACIONES === */
+.unreadNotification {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+.notificationType {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.notificationDate {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.notificationMessage {
+  color: #374151;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.markReadButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.markReadButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.markReadButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.deleteButton {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.deleteButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* === NOTIFICACIONES RESPONSIVE === */
+@media (max-width: 768px) {
+  .unreadNotification {
+    border-left: 3px solid #ef4444;
+  }
+  
+  .notificationType,
+  .notificationDate {
+    font-size: 0.8rem;
+  }
+  
+  .markReadButton,
+  .deleteButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}

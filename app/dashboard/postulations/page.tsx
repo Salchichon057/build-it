@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import PostulationsClient from "./PostulationsClient";
+import { getMyPostulationsAction } from "@/lib/postulations/actions/postulationActions";
 
 export default async function PostulationsPage() {
   const supabase = await createClient();
@@ -25,8 +26,12 @@ export default async function PostulationsPage() {
     return redirect("/dashboard?error=Esta sección es solo para profesionales");
   }
 
-  // Por ahora, simularemos las postulaciones ya que no tenemos la tabla implementada
-  // En el futuro, aquí se harían consultas reales a la base de datos de postulaciones
-  
-  return <PostulationsClient userId={user.id} />;
+  // Obtener las postulaciones reales del profesional
+  try {
+    const postulations = await getMyPostulationsAction();
+    return <PostulationsClient userId={user.id} initialPostulations={postulations} />;
+  } catch (error) {
+    console.error("Error loading postulations:", error);
+    return <PostulationsClient userId={user.id} initialPostulations={[]} />;
+  }
 }

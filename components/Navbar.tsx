@@ -6,17 +6,17 @@ import { useSessionContext } from "@supabase/auth-helpers-react";
 import styles from "@/styles/navbar.module.css";
 import type { User } from "@/lib/auth/model/user";
 import { getUserProfile } from "@/lib/auth/service/authService.client";
+import { notificationServiceClient } from "@/lib/notifications/service/notificationService.client";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState<User | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [hasNotifications, setHasNotifications] = useState(false);
+  const [loadingNotifications, setLoadingNotifications] = useState(false);
   const router = useRouter();
   const { session, isLoading } = useSessionContext();
-
-  // Aquí irá tu lógica real de notificaciones
-  const [hasNotifications, setHasNotifications] = useState(true); // true = hay notificaciones
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -35,6 +35,34 @@ export default function Navbar() {
       setLoadingProfile(false);
     };
     fetchProfile();
+  }, [session]);
+
+  // Verificar notificaciones no leídas
+  useEffect(() => {
+    const checkNotifications = async () => {
+      if (!session?.user?.id) {
+        setHasNotifications(false);
+        return;
+      }
+      
+      setLoadingNotifications(true);
+      try {
+        const unreadCount = await notificationServiceClient.getUnreadCount(session.user.id);
+        setHasNotifications(unreadCount > 0);
+      } catch (error) {
+        console.error("Error checking notifications:", error);
+        setHasNotifications(false);
+      } finally {
+        setLoadingNotifications(false);
+      }
+    };
+
+    checkNotifications();
+    
+    // Revisar notificaciones cada 30 segundos
+    const interval = setInterval(checkNotifications, 30000);
+    
+    return () => clearInterval(interval);
   }, [session]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
