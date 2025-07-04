@@ -1,0 +1,252 @@
+/* ===============================================
+   404 PAGE STYLES
+   =============================================== */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #02273A 0%, #34A1DE 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.content {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+/* ===============================================
+   LOGO SECTION
+   =============================================== */
+
+.logoSection {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+/* ===============================================
+   ERROR SECTION
+   =============================================== */
+
+.errorSection {
+  margin-bottom: 2.5rem;
+}
+
+.errorCode {
+  font-size: 6rem;
+  font-weight: 700;
+  color: #02273A;
+  margin: 0;
+  line-height: 1;
+}
+
+.errorTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #02273A;
+  margin: 0.5rem 0;
+}
+
+.errorDescription {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ===============================================
+   ACTION SECTION
+   =============================================== */
+
+.actionSection {
+  margin-bottom: 2.5rem;
+}
+
+.homeButton {
+  background: #02273A;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.homeButton:hover {
+  background: #34A1DE;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(52, 161, 222, 0.3);
+}
+
+.helpLinks {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpLink {
+  background: #f8fafc;
+  color: #64748b;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.helpLink:hover {
+  background: #e2e8f0;
+  color: #02273A;
+  transform: translateY(-1px);
+}
+
+/* ===============================================
+   QUICK LINKS SECTION
+   =============================================== */
+
+.quickLinksSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.quickLinksSection h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #02273A;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.quickLinks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.quickLink {
+  background: #f8fafc;
+  color: #02273A;
+  padding: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.quickLink:hover {
+  background: #34A1DE;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(52, 161, 222, 0.3);
+}
+
+.quickLink i {
+  font-size: 1rem;
+  width: 20px;
+}
+
+/* ===============================================
+   IMPROVED SUGGESTION SECTION
+   =============================================== */
+
+.suggestionSection {
+  padding-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.suggestionSection h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #02273A;
+  margin: 0 0 1rem 0;
+}
+
+.suggestionSection p {
+  color: #64748b;
+  margin: 0 0 1rem 0;
+}
+
+.suggestionSection ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.suggestionSection li {
+  color: #64748b;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0;
+}
+
+.suggestionSection li::before {
+  display: none;
+}
+
+.suggestionSection li i {
+  color: #34A1DE;
+  width: 16px;
+}
+
+.suggestionSection strong {
+  color: #02273A;
+}
+
+/* ===============================================
+   RESPONSIVE DESIGN
+   =============================================== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .content {
+    padding: 2rem;
+  }
+  
+  .errorCode {
+    font-size: 4rem;
+  }
+  
+  .errorTitle {
+    font-size: 1.5rem;
+  }
+  
+  .helpLinks {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .helpLink {
+    width: 100%;
+    justify-content: center;
+  }
+}
