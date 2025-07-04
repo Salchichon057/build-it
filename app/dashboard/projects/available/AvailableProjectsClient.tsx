@@ -72,16 +72,16 @@ export default function AvailableProjectsClient({ projects }: AvailableProjectsC
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return "Presupuesto a convenir";
-    return new Intl.NumberFormat("es-CL", {
+    return new Intl.NumberFormat("es-MX", {
       style: "currency",
-      currency: "CLP",
+      currency: "MXN",
       minimumFractionDigits: 0,
     }).format(amount);
   };
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "Sin fecha definida";
-    return new Date(dateString).toLocaleDateString("es-ES");
+    return new Date(dateString).toLocaleDateString("es-MX");
   };
 
   const handleApply = async (projectId: string) => {
@@ -122,10 +122,13 @@ export default function AvailableProjectsClient({ projects }: AvailableProjectsC
             className={styles.filterSelect}
           >
             <option value="">Todas las ubicaciones</option>
-            <option value="santiago">Santiago</option>
-            <option value="valparaíso">Valparaíso</option>
-            <option value="concepción">Concepción</option>
-            <option value="la serena">La Serena</option>
+            <option value="cdmx">Ciudad de México</option>
+            <option value="guadalajara">Guadalajara</option>
+            <option value="monterrey">Monterrey</option>
+            <option value="puebla">Puebla</option>
+            <option value="tijuana">Tijuana</option>
+            <option value="león">León</option>
+            <option value="mérida">Mérida</option>
           </select>
           
           <select

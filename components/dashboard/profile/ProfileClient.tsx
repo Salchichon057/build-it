@@ -210,7 +210,7 @@ export default function ProfileClient({ profile, userSkills }: ProfileClientProp
                     <i className="fa-solid fa-cake-candles"></i>
                     <div>
                       <strong>Fecha de nacimiento:</strong>
-                      <span>{new Date(profile.birthdate).toLocaleDateString('es-ES')}</span>
+                      <span>{new Date(profile.birthdate).toLocaleDateString('es-MX')}</span>
                     </div>
                   </div>
                 )}

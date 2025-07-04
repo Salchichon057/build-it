@@ -192,7 +192,7 @@ export default function ProfessionalsClient({ professionals }: ProfessionalsClie
                 
                 <div className={styles.professionalFooter}>
                   <span className={styles.joinDate}>
-                    Miembro desde {new Date(professional.created_at).toLocaleDateString("es-ES", { 
+                    Miembro desde {new Date(professional.created_at).toLocaleDateString("es-MX", { 
                       year: 'numeric', 
                       month: 'long' 
                     })}

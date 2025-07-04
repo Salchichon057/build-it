@@ -2,11 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import { useState, useEffect } from "react";
 
 import styles from "../styles/landing/landing.module.css";
 import misionStyles from "../styles/landing/mision.module.css";
@@ -14,6 +10,118 @@ import benefitsStyles from "../styles/landing/benefits.module.css";
 import howitworksStyles from "../styles/landing/howitworks.module.css";
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState("inicio");
+  const [currentSlideClient, setCurrentSlideClient] = useState(0);
+  const [currentSlideProfessional, setCurrentSlideProfessional] = useState(0);
+
+  // Datos para los carruseles
+  const clientSlides = [
+    {
+      image: "/landing/client_01.png",
+      title: "Publica tu proyecto",
+      description: "Describe tu proyecto con detalles, presupuesto y fechas.",
+    },
+    {
+      image: "/landing/client_02.png",
+      title: "Recibe postulaciones",
+      description: "Los profesionales interesados enviarán sus propuestas.",
+    },
+    {
+      image: "/landing/client_03.png",
+      title: "Selecciona al mejor",
+      description: "Revisa perfiles, propuestas y elige al profesional ideal.",
+    },
+  ];
+
+  const professionalSlides = [
+    {
+      image: "/landing/professional_01.png",
+      title: "Explora proyectos",
+      description:
+        "Navega por proyectos disponibles que coincidan con tu especialidad.",
+    },
+    {
+      image: "/landing/professional_02.png",
+      title: "Envía tu propuesta",
+      description: "Postúlate con tu mejor propuesta y muestra tu experiencia.",
+    },
+    {
+      image: "/landing/professional_03.png",
+      title: "Ejecuta el proyecto",
+      description: "Si eres seleccionado, comienza a trabajar en el proyecto.",
+    },
+  ];
+
+  // Detección de sección activa basada en scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["inicio", "mision", "beneficios", "como-funciona"];
+      const headerHeight = 80; // Altura aproximada del header sticky
+      const scrollPosition = window.scrollY + headerHeight + 50;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const height = element.offsetHeight;
+
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + height
+          ) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Función para scroll suave a secciones
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerHeight = 80; // Altura del header sticky
+      const offsetTop = element.offsetTop - headerHeight;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Funciones para controlar carrusel de clientes
+  const nextSlideClient = () => {
+    setCurrentSlideClient((prev) => (prev + 1) % clientSlides.length);
+  };
+
+  const prevSlideClient = () => {
+    setCurrentSlideClient(
+      (prev) => (prev - 1 + clientSlides.length) % clientSlides.length
+    );
+  };
+
+  const goToSlideClient = (index: number) => {
+    setCurrentSlideClient(index);
+  };
+
+  // Funciones para controlar carrusel de profesionales
+  const nextSlideProfessional = () => {
+    setCurrentSlideProfessional((prev) => (prev + 1) % professionalSlides.length);
+  };
+
+  const prevSlideProfessional = () => {
+    setCurrentSlideProfessional(
+      (prev) => (prev - 1 + professionalSlides.length) % professionalSlides.length
+    );
+  };
+
+  const goToSlideProfessional = (index: number) => {
+    setCurrentSlideProfessional(index);
+  };
   return (
     <div className={styles.landing}>
       <header className={styles.header}>
@@ -21,16 +129,36 @@ export default function Home() {
           <img src="/logo.svg" alt="Logo de BuildIt" />
           <ul className={styles.navLinks}>
             <li>
-              <Link href="/">Inicio</Link>
+              <button
+                onClick={() => scrollToSection("inicio")}
+                className={activeSection === "inicio" ? styles.active : ""}
+              >
+                Inicio
+              </button>
             </li>
             <li>
-              <Link href="#mision">Misión</Link>
+              <button
+                onClick={() => scrollToSection("mision")}
+                className={activeSection === "mision" ? styles.active : ""}
+              >
+                Misión
+              </button>
             </li>
             <li>
-              <Link href="#beneficios">Beneficios</Link>
+              <button
+                onClick={() => scrollToSection("beneficios")}
+                className={activeSection === "beneficios" ? styles.active : ""}
+              >
+                Beneficios
+              </button>
             </li>
             <li>
-              <Link href="#como-funciona">¿Cómo Funciona?</Link>
+              <button
+                onClick={() => scrollToSection("como-funciona")}
+                className={activeSection === "como-funciona" ? styles.active : ""}
+              >
+                ¿Cómo Funciona?
+              </button>
             </li>
           </ul>
           <ul className={styles.authLinks}>
@@ -44,7 +172,7 @@ export default function Home() {
         </nav>
       </header>
       <main>
-        <section className={styles.hero}>
+        <section id="inicio" className={styles.hero}>
           <div className={styles.heroContent}>
             <img
               src="/max_logo.svg"
@@ -212,135 +340,115 @@ export default function Home() {
         </section>
         <section className={howitworksStyles.howItWorks} id="como-funciona">
           <h2 className={benefitsStyles.title}>¿Cómo Funciona?</h2>
+
+          {/* Para Clientes */}
           <p className={benefitsStyles.subTitle}>Para Clientes</p>
-          <div
-            className={`${howitworksStyles.carouselContainer} ${howitworksStyles.carouselContainerClient}`}
-          >
-            <Swiper
-              modules={[Navigation, Pagination]}
-              slidesPerView={3}
-              spaceBetween={30}
-              centeredSlides={true}
-              navigation={{
-                nextEl: `.${howitworksStyles.swiperButtonNextClient}`,
-                prevEl: `.${howitworksStyles.swiperButtonPrevClient}`,
-              }}
-              pagination={{
-                el: `.${howitworksStyles.swiperPaginationClient}`,
-                clickable: true,
-              }}
-              breakpoints={{
-                0: {
-                  slidesPerView: 1,
-                  spaceBetween: 10,
-                },
-                768: {
-                  slidesPerView: 3,
-                  spaceBetween: 20,
-                },
-              }}
-              className={`${howitworksStyles.swiper} ${howitworksStyles.swiperClient}`}
-            >
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/client_01.png"
-                  alt="Paso 1 para Clientes"
-                  className={howitworksStyles.carouselImage}
+          <div className={howitworksStyles.carouselContainer}>
+            <div className={howitworksStyles.carouselWrapper}>
+              <div
+                className={howitworksStyles.carouselTrack}
+                style={{ transform: `translateX(-${currentSlideClient * 100}%)` }}
+              >
+                {clientSlides.map((slide, index) => (
+                  <div key={index} className={howitworksStyles.slide}>
+                    <div className={howitworksStyles.slideContent}>
+                      <img
+                        src={slide.image}
+                        alt={`Paso ${index + 1} para Clientes`}
+                        className={howitworksStyles.carouselImage}
+                      />
+                      <h4>{slide.title}</h4>
+                      <p>{slide.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Botones de navegación */}
+              <button
+                className={`${howitworksStyles.navButton} ${howitworksStyles.prevButton}`}
+                onClick={prevSlideClient}
+                aria-label="Anterior"
+              >
+                ‹
+              </button>
+              <button
+                className={`${howitworksStyles.navButton} ${howitworksStyles.nextButton}`}
+                onClick={nextSlideClient}
+                aria-label="Siguiente"
+              >
+                ›
+              </button>
+            </div>
+
+            {/* Indicadores (puntos) */}
+            <div className={howitworksStyles.pagination}>
+              {clientSlides.map((_, index) => (
+                <button
+                  key={index}
+                  className={`${howitworksStyles.paginationDot} ${
+                    index === currentSlideClient ? howitworksStyles.active : ""
+                  }`}
+                  onClick={() => goToSlideClient(index)}
+                  aria-label={`Ir al paso ${index + 1}`}
                 />
-              </SwiperSlide>
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/client_02.png"
-                  alt="Paso 2 para Clientes"
-                  className={howitworksStyles.carouselImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/client_03.png"
-                  alt="Paso 3 para Clientes"
-                  className={howitworksStyles.carouselImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/client_04.png"
-                  alt="Paso 4 para Clientes"
-                  className={howitworksStyles.carouselImage}
-                />
-              </SwiperSlide>
-            </Swiper>
-            <div className={howitworksStyles.swiperButtonPrevClient}></div>
-            <div className={howitworksStyles.swiperButtonNextClient}></div>
-            <div className={howitworksStyles.swiperPaginationClient}></div>
+              ))}
+            </div>
           </div>
+
+          {/* Para Profesionales */}
           <p className={benefitsStyles.subTitle}>Para Profesionales</p>
-          <div
-            className={`${howitworksStyles.carouselContainer} ${howitworksStyles.carouselContainerProfessional}`}
-          >
-            <Swiper
-              modules={[Navigation, Pagination]}
-              slidesPerView={3}
-              spaceBetween={30}
-              centeredSlides={true}
-              navigation={{
-                nextEl: `.${howitworksStyles.swiperButtonNextProfessional}`,
-                prevEl: `.${howitworksStyles.swiperButtonPrevProfessional}`,
-              }}
-              pagination={{
-                el: `.${howitworksStyles.swiperPaginationProfessional}`,
-                clickable: true,
-              }}
-              breakpoints={{
-                0: {
-                  slidesPerView: 1,
-                  spaceBetween: 10,
-                },
-                768: {
-                  slidesPerView: 3,
-                  spaceBetween: 20,
-                },
-              }}
-              className={`${howitworksStyles.swiper} ${howitworksStyles.swiperProfessional}`}
-            >
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/professional_01.png"
-                  alt="Paso 1 para Profesionales"
-                  className={howitworksStyles.carouselImage}
+          <div className={howitworksStyles.carouselContainer}>
+            <div className={howitworksStyles.carouselWrapper}>
+              <div
+                className={howitworksStyles.carouselTrack}
+                style={{ transform: `translateX(-${currentSlideProfessional * 100}%)` }}
+              >
+                {professionalSlides.map((slide, index) => (
+                  <div key={index} className={howitworksStyles.slide}>
+                    <div className={howitworksStyles.slideContent}>
+                      <img
+                        src={slide.image}
+                        alt={`Paso ${index + 1} para Profesionales`}
+                        className={howitworksStyles.carouselImage}
+                      />
+                      <h4>{slide.title}</h4>
+                      <p>{slide.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Botones de navegación */}
+              <button
+                className={`${howitworksStyles.navButton} ${howitworksStyles.prevButton}`}
+                onClick={prevSlideProfessional}
+                aria-label="Anterior"
+              >
+                ‹
+              </button>
+              <button
+                className={`${howitworksStyles.navButton} ${howitworksStyles.nextButton}`}
+                onClick={nextSlideProfessional}
+                aria-label="Siguiente"
+              >
+                ›
+              </button>
+            </div>
+
+            {/* Indicadores (puntos) */}
+            <div className={howitworksStyles.pagination}>
+              {professionalSlides.map((_, index) => (
+                <button
+                  key={index}
+                  className={`${howitworksStyles.paginationDot} ${
+                    index === currentSlideProfessional ? howitworksStyles.active : ""
+                  }`}
+                  onClick={() => goToSlideProfessional(index)}
+                  aria-label={`Ir al paso ${index + 1}`}
                 />
-              </SwiperSlide>
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/professional_02.png"
-                  alt="Paso 2 para Profesionales"
-                  className={howitworksStyles.carouselImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/professional_03.png"
-                  alt="Paso 3 para Profesionales"
-                  className={howitworksStyles.carouselImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide className={howitworksStyles.swiperSlide}>
-                <img
-                  src="/landing/professional_04.png"
-                  alt="Paso 4 para Profesionales"
-                  className={howitworksStyles.carouselImage}
-                />
-              </SwiperSlide>
-            </Swiper>
-            <div
-              className={howitworksStyles.swiperButtonPrevProfessional}
-            ></div>
-            <div
-              className={howitworksStyles.swiperButtonNextProfessional}
-            ></div>
-            <div
-              className={howitworksStyles.swiperPaginationProfessional}
-            ></div>
+              ))}
+            </div>
           </div>
         </section>
       </main>

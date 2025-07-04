@@ -55,7 +55,7 @@ export default function NotFound() {
             </li>
             <li>
               <i className="fa-solid fa-envelope"></i>
-              Contactar nuestro soporte en <strong>soporte@buildit.com</strong>
+              Contactar nuestro soporte en <strong>soporte@buildit.mx</strong>
             </li>
             <li>
               <i className="fa-solid fa-search"></i>

@@ -63,15 +63,15 @@ export default function PostulationsClient({ userId, initialPostulations }: Post
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return "Presupuesto a convenir";
-    return new Intl.NumberFormat("es-CL", {
+    return new Intl.NumberFormat("es-MX", {
       style: "currency",
-      currency: "CLP",
+      currency: "MXN",
       minimumFractionDigits: 0,
     }).format(amount);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("es-ES", {
+    return new Date(dateString).toLocaleDateString("es-MX", {
       year: 'numeric',
       month: 'short',
       day: 'numeric'

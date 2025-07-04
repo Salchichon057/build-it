@@ -217,7 +217,7 @@ export default function SettingsClient({ profile }: SettingsClientProps) {
                       <i className="fa-solid fa-envelope"></i>
                       <div>
                         <strong>Correo de soporte</strong>
-                        <span>soporte@buildit.com</span>
+                        <span>soporte@buildit.mx</span>
                       </div>
                     </div>
                     <div className={styles.contactItem}>

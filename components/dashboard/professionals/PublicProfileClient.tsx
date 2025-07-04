@@ -194,7 +194,7 @@ export default function PublicProfileClient({ professional, skills }: PublicProf
           <div className={styles.memberInfo}>
             <p>
               <i className="fa-solid fa-calendar"></i>
-              Miembro desde {new Date(professional.created_at).toLocaleDateString("es-ES", { 
+              Miembro desde {new Date(professional.created_at).toLocaleDateString("es-MX", { 
                 year: 'numeric', 
                 month: 'long' 
               })}

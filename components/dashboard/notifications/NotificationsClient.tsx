@@ -110,13 +110,13 @@ export default function NotificationsClient({ userId, initialNotifications }: No
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
     if (diffDays === 1) {
-      return `Hoy ${date.toLocaleTimeString("es-ES", { hour: '2-digit', minute: '2-digit' })}`;
+      return `Hoy ${date.toLocaleTimeString("es-MX", { hour: '2-digit', minute: '2-digit' })}`;
     } else if (diffDays === 2) {
-      return `Ayer ${date.toLocaleTimeString("es-ES", { hour: '2-digit', minute: '2-digit' })}`;
+      return `Ayer ${date.toLocaleTimeString("es-MX", { hour: '2-digit', minute: '2-digit' })}`;
     } else if (diffDays <= 7) {
       return `Hace ${diffDays - 1} días`;
     } else {
-      return date.toLocaleDateString("es-ES", {
+      return date.toLocaleDateString("es-MX", {
         year: 'numeric',
         month: 'short',
         day: 'numeric',

@@ -9,16 +9,18 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: {
-    default: "BuildIt - Conecta con Profesionales de la Construcción",
+    default: "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
     template: "%s | BuildIt"
   },
   description:
-    "Plataforma líder que conecta clientes con arquitectos, diseñadores y constructores calificados. Encuentra profesionales de confianza para tu proyecto de construcción y haz realidad tus ideas.",
+    "Conecta con arquitectos, diseñadores y constructores verificados. Publica tu proyecto, recibe propuestas y selecciona al mejor profesional para hacer realidad tu obra. ¡Únete a BuildIt!",
   keywords: [
-    "construcción", "arquitectos", "diseñadores", "constructores", "proyectos", 
-    "obras", "profesionales", "plataforma", "BuildIt", "reformas", "albañilería",
-    "decoración", "ingeniería", "presupuestos", "contratistas", "especialistas",
-    "construcción residencial", "construcción comercial", "renovaciones"
+    "arquitectos", "diseñadores", "constructores", "proyectos construcción", 
+    "profesionales construcción", "obras", "reformas", "construcción casa",
+    "presupuestos construcción", "contratistas", "albañiles", "decoradores",
+    "ingenieros", "plataforma construcción", "BuildIt", "México", "profesionales verificados",
+    "construcción residencial", "construcción comercial", "renovaciones", "proyectos obra",
+    "construcción mexico", "obras mexico", "arquitectos mexico", "constructores mexico"
   ],
   authors: [{ name: "BuildIt Team", url: defaultUrl }],
   creator: "BuildIt",
@@ -37,28 +39,28 @@ export const metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "es_ES",
+    locale: "es_MX",
     url: defaultUrl,
-    title: "BuildIt - Conecta con Profesionales de la Construcción",
-    description: "Plataforma líder que conecta clientes con profesionales de la construcción. Encuentra arquitectos, diseñadores y constructores para tu proyecto y haz realidad tus ideas.",
+    title: "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
+    description: "Conecta con arquitectos, diseñadores y constructores verificados en México. Publica tu proyecto, recibe propuestas y encuentra al profesional ideal para tu obra.",
     siteName: "BuildIt",
     images: [
       {
-        url: "/og-image.png",
+        url: "/landing/hero.png",
         width: 1200,
         height: 630,
-        alt: "BuildIt - Plataforma de Construcción",
+        alt: "BuildIt - Plataforma de profesionales de construcción",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@BuildItApp",
-    title: "BuildIt - Conecta con Profesionales de la Construcción",
-    description: "Encuentra profesionales de la construcción para tu proyecto. Arquitectos, diseñadores y constructores verificados.",
-    images: ["/og-image.png"],
-    creator: "@BuildItApp",
+    site: "@BuildItMX",
+    title: "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
+    description: "Conecta con profesionales de la construcción verificados. Publica tu proyecto y encuentra al mejor profesional. ¡Únete ahora!",
+    images: ["/landing/hero.png"],
+    creator: "@BuildItMX",
   },
   category: "construction",
   manifest: "/manifest.json",
@@ -81,7 +83,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es-MX" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -89,6 +91,23 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=no" />
+        
+        {/* SEO específico para construcción */}
+        <meta name="geo.region" content="MX" />
+        <meta name="geo.country" content="Mexico" />
+        <meta name="language" content="Spanish" />
+        <meta name="distribution" content="global" />
+        <meta name="rating" content="general" />
+        <meta name="coverage" content="Worldwide" />
+        <meta name="target" content="all" />
+        <meta name="audience" content="all" />
+        <meta name="classification" content="construction, architecture, design" />
+        
+        {/* Metatags para redes sociales */}
+        <meta property="fb:app_id" content="your_facebook_app_id" />
+        <meta property="business:contact_data:locality" content="México" />
+        <meta property="business:contact_data:region" content="MX" />
+        <meta property="business:contact_data:country_name" content="Mexico" />
         
         {/* Fuentes optimizadas */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -113,23 +132,60 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
+              "@type": ["WebSite", "Service"],
               "name": "BuildIt",
               "alternateName": "BuildIt - Plataforma de Construcción",
               "url": process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000",
-              "description": "Plataforma líder que conecta clientes con profesionales de la construcción",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": {
-                  "@type": "EntryPoint",
-                  "urlTemplate": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/dashboard/professionals?search={search_term_string}`
-                },
-                "query-input": "required name=search_term_string"
+              "description": "Conecta con arquitectos, diseñadores y constructores verificados para tu proyecto de construcción",
+              "serviceType": "Construction Professional Network",
+              "areaServed": {
+                "@type": "Country",
+                "name": "Mexico"
               },
+              "category": ["Construction", "Architecture", "Design"],
+              "audience": {
+                "@type": "Audience",
+                "audienceType": ["Property Owners", "Construction Professionals", "Architects", "Designers"]
+              },
+              "offers": [
+                {
+                  "@type": "Offer",
+                  "name": "Conexión con Arquitectos",
+                  "description": "Encuentra arquitectos calificados para tu proyecto",
+                  "category": "Architecture Services"
+                },
+                {
+                  "@type": "Offer", 
+                  "name": "Conexión con Constructores",
+                  "description": "Encuentra constructores verificados para tu obra",
+                  "category": "Construction Services"
+                },
+                {
+                  "@type": "Offer",
+                  "name": "Conexión con Diseñadores", 
+                  "description": "Encuentra diseñadores profesionales para tu proyecto",
+                  "category": "Design Services"
+                }
+              ],
+              "potentialAction": [
+                {
+                  "@type": "SearchAction",
+                  "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/dashboard/professionals?search={search_term_string}`
+                  },
+                  "query-input": "required name=search_term_string"
+                },
+                {
+                  "@type": "RegisterAction",
+                  "target": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/sign-up`,
+                  "name": "Registrarse en BuildIt"
+                }
+              ],
               "sameAs": [
-                "https://twitter.com/BuildItApp",
-                "https://facebook.com/BuildItApp",
-                "https://linkedin.com/company/buildit"
+                "https://twitter.com/BuildItMX",
+                "https://facebook.com/BuildItMX", 
+                "https://linkedin.com/company/buildit-mx"
               ],
               "publisher": {
                 "@type": "Organization",
@@ -137,7 +193,25 @@ export default function RootLayout({
                 "name": "BuildIt",
                 "logo": {
                   "@type": "ImageObject",
-                  "url": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/logo.svg`
+                  "url": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/logo.svg`,
+                  "width": 300,
+                  "height": 100
+                },
+                "contactPoint": {
+                  "@type": "ContactPoint",
+                  "contactType": "Customer Service",
+                  "areaServed": "MX",
+                  "availableLanguage": "Spanish"
+                }
+              },
+              "mainEntity": {
+                "@type": "WebPage",
+                "@id": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}#webpage`,
+                "name": "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
+                "description": "Landing page de BuildIt donde puedes conectar con profesionales de la construcción",
+                "primaryImageOfPage": {
+                  "@type": "ImageObject",
+                  "url": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/landing/hero.png`
                 }
               }
             })
