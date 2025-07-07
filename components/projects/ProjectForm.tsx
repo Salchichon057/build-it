@@ -208,7 +208,7 @@ export default function ProjectForm({ onSubmit, onClose }: ProjectFormProps) {
       />
 
       <InputGroup
-        label="Presupuesto"
+        label="Presupuesto (MXN)"
         id="budget"
         name="budget"
         type="number"
@@ -216,6 +216,8 @@ export default function ProjectForm({ onSubmit, onClose }: ProjectFormProps) {
         onChange={handleChange}
         error={fieldErrors.budget}
         min={0}
+        step={0.01}
+        placeholder="Ej: 50000.00"
       />
 
       <InputGroup

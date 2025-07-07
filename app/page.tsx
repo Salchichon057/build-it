@@ -35,18 +35,18 @@ export default function Home() {
 
   const professionalSlides = [
     {
-      image: "/landing/professional_01.png",
+      image: "/landing/professional_01.jpeg",
       title: "Explora proyectos",
       description:
         "Navega por proyectos disponibles que coincidan con tu especialidad.",
     },
     {
-      image: "/landing/professional_02.png",
+      image: "/landing/professional_02.jpg",
       title: "Envía tu propuesta",
       description: "Postúlate con tu mejor propuesta y muestra tu experiencia.",
     },
     {
-      image: "/landing/professional_03.png",
+      image: "/landing/professional_03.jpeg",
       title: "Ejecuta el proyecto",
       description: "Si eres seleccionado, comienza a trabajar en el proyecto.",
     },
@@ -279,7 +279,7 @@ export default function Home() {
                 <div className={benefitsStyles.flipCardInner}>
                   <div className={benefitsStyles.flipCardFront}>
                     <img
-                      src="/landing/professional_01.png"
+                      src="/landing/professional_01.jpeg"
                       alt="Encuentra proyectos"
                       className={benefitsStyles.cardImage}
                     />
@@ -299,7 +299,7 @@ export default function Home() {
                 <div className={benefitsStyles.flipCardInner}>
                   <div className={benefitsStyles.flipCardFront}>
                     <img
-                      src="/landing/professional_02.png"
+                      src="/landing/professional_02.jpg"
                       alt="Encuentra proyectos"
                       className={benefitsStyles.cardImage}
                     />
@@ -319,7 +319,7 @@ export default function Home() {
                 <div className={benefitsStyles.flipCardInner}>
                   <div className={benefitsStyles.flipCardFront}>
                     <img
-                      src="/landing/professional_03.png"
+                      src="/landing/professional_03.jpeg"
                       alt="Encuentra proyectos"
                       className={benefitsStyles.cardImage}
                     />

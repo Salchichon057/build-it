@@ -13,6 +13,16 @@ export default function ProjectCard({ project, onDeleted }: ProjectCardProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [pending, setPending] = useState(false);
 
+  const formatCurrency = (amount: number | null) => {
+    if (!amount) return "Presupuesto a convenir";
+    return new Intl.NumberFormat("es-MX", {
+      style: "currency",
+      currency: "MXN",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  };
+
   const handleDelete = async () => {
     setPending(true);
     await deleteProjectAction(project.id);
@@ -63,7 +73,7 @@ export default function ProjectCard({ project, onDeleted }: ProjectCardProps) {
       <div className={styles.cardMeta}>
         {project.budget && (
           <span>
-            <i className="fa-solid fa-money-bill-wave"></i> ${project.budget}
+            <i className="fa-solid fa-money-bill-wave"></i> {formatCurrency(project.budget)}
           </span>
         )}
         {project.location && (

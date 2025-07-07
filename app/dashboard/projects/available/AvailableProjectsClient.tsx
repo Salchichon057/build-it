@@ -18,14 +18,25 @@ interface Project {
     first_name: string;
     last_name: string;
     profile_image: string | null;
+    phone: string | null;
   } | null;
+}
+
+interface User {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  account_type: string;
 }
 
 interface AvailableProjectsClientProps {
   projects: Project[];
+  currentUser: User;
 }
 
-export default function AvailableProjectsClient({ projects }: AvailableProjectsClientProps) {
+export default function AvailableProjectsClient({ projects, currentUser }: AvailableProjectsClientProps) {
   const [filteredProjects, setFilteredProjects] = useState(projects);
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
@@ -76,6 +87,7 @@ export default function AvailableProjectsClient({ projects }: AvailableProjectsC
       style: "currency",
       currency: "MXN",
       minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
     }).format(amount);
   };
 
@@ -84,10 +96,49 @@ export default function AvailableProjectsClient({ projects }: AvailableProjectsC
     return new Date(dateString).toLocaleDateString("es-MX");
   };
 
-  const handleApply = async (projectId: string) => {
-    // Aquí implementarías la lógica de postulación
-    // Por ahora, solo mostramos un alert
-    alert("Funcionalidad de postulación próximamente disponible");
+  const generateWhatsAppLink = (project: Project) => {
+    if (!project.users?.phone) {
+      alert(`❌ No es posible contactar al cliente
+
+El cliente ${project.users?.first_name} ${project.users?.last_name} no ha registrado un número de teléfono en su perfil.
+
+💡 Sugerencia: Puedes ver otros proyectos disponibles o contactar al cliente a través de BuildIt cuando actualice su información de contacto.`);
+      return null;
+    }
+
+    const professionalName = `${currentUser.first_name} ${currentUser.last_name}`;
+    const clientName = `${project.users.first_name} ${project.users.last_name}`;
+    const projectTitle = project.title;
+    
+    const message = `¡Hola ${clientName}! 👋
+
+Mi nombre es ${professionalName} y soy un profesional de la construcción. He visto tu proyecto "${projectTitle}" en BuildIt y me interesa mucho poder colaborar contigo.
+
+Me gustaría conversar sobre:
+• Los detalles específicos del proyecto
+• Mi experiencia y cómo puedo ayudarte
+• Presupuesto y cronograma
+• Cualquier pregunta que tengas
+
+¿Podrías contarme más sobre lo que necesitas? Estoy disponible para una llamada o reunión cuando te sea conveniente.
+
+¡Espero poder trabajar juntos en este proyecto! 🏗️
+
+Saludos,
+${professionalName}
+BuildIt Platform`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const phoneNumber = project.users.phone.replace(/\D/g, ''); // Remover caracteres no numéricos
+    
+    return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  };
+
+  const handleApply = (project: Project) => {
+    const whatsappLink = generateWhatsAppLink(project);
+    if (whatsappLink) {
+      window.open(whatsappLink, '_blank');
+    }
   };
 
   return (
@@ -156,7 +207,14 @@ export default function AvailableProjectsClient({ projects }: AvailableProjectsC
           filteredProjects.map((project) => (
             <div key={project.id} className={styles.projectCard}>
               <div className={styles.projectHeader}>
-                <h3 className={styles.projectTitle}>{project.title}</h3>
+                <div className={styles.titleSection}>
+                  <h3 className={styles.projectTitle}>{project.title}</h3>
+                  {project.users?.phone && (
+                    <span className={styles.whatsappBadge} title="Cliente disponible en WhatsApp">
+                      <i className="fa-brands fa-whatsapp"></i>
+                    </span>
+                  )}
+                </div>
                 <div className={styles.projectBudget}>
                   {formatCurrency(project.budget)}
                 </div>
@@ -208,10 +266,10 @@ export default function AvailableProjectsClient({ projects }: AvailableProjectsC
                 
                 <button
                   className={styles.applyButton}
-                  onClick={() => handleApply(project.id)}
+                  onClick={() => handleApply(project)}
                 >
-                  <i className="fa-solid fa-paper-plane"></i>
-                  Postular
+                  <i className="fa-brands fa-whatsapp"></i>
+                  Contactar por WhatsApp
                 </button>
               </div>
             </div>

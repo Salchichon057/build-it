@@ -67,6 +67,7 @@ export default function PostulationsClient({ userId, initialPostulations }: Post
       style: "currency",
       currency: "MXN",
       minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
     }).format(amount);
   };
 

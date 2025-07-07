@@ -180,13 +180,30 @@
   margin-bottom: 1rem;
 }
 
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  margin-right: 1rem;
+}
+
 .projectTitle {
   font-size: 1.3rem;
   font-weight: 600;
   color: #1e293b;
   margin: 0;
-  flex: 1;
-  margin-right: 1rem;
+}
+
+.whatsappBadge {
+  background: #25D366;
+  color: white;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .projectBudget {
@@ -265,7 +282,7 @@
 }
 
 .applyButton {
-  background: #34A1DE;
+  background: #25D366; /* Color oficial de WhatsApp */
   color: white;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -280,7 +297,7 @@
 }
 
 .applyButton:hover {
-  background: #2563eb;
+  background: #1ebe53; /* Verde más oscuro para hover */
   transform: translateY(-1px);
 }
 

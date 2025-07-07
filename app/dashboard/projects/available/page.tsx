@@ -14,18 +14,18 @@ export default async function AvailableProjectsPage() {
     return redirect("/sign-in");
   }
 
-  // Verificar que el usuario sea profesional
-  const { data: profile } = await supabase
+  // Obtener el perfil completo del usuario profesional
+  const { data: userProfile } = await supabase
     .from("users")
-    .select("account_type")
+    .select("*")
     .eq("id", user.id)
     .single();
 
-  if (!profile || profile.account_type !== "professional") {
+  if (!userProfile || userProfile.account_type !== "professional") {
     return redirect("/dashboard?error=Acceso no autorizado");
   }
 
-  // Obtener proyectos disponibles (abiertos)
+  // Obtener proyectos disponibles (abiertos) con información del cliente incluyendo teléfono
   const { data: projects, error } = await supabase
     .from("projects")
     .select(`
@@ -33,7 +33,8 @@ export default async function AvailableProjectsPage() {
       users:users_id (
         first_name,
         last_name,
-        profile_image
+        profile_image,
+        phone
       )
     `)
     .eq("status", "open")
@@ -43,5 +44,5 @@ export default async function AvailableProjectsPage() {
     console.error("Error fetching projects:", error);
   }
 
-  return <AvailableProjectsClient projects={projects || []} />;
+  return <AvailableProjectsClient projects={projects || []} currentUser={userProfile} />;
 }
