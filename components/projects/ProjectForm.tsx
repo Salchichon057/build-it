@@ -123,6 +123,30 @@ export default function ProjectForm({ onSubmit, onClose, project }: ProjectFormP
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (e.target instanceof HTMLInputElement) {
       const file = e.target.files?.[0] || null;
+      
+      // Validar tamaño del archivo
+      if (file) {
+        const maxSizeInMB = 8; // Límite un poco menor que el servidor (10MB)
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+        
+        if (file.size > maxSizeInBytes) {
+          setFieldErrors((prev) => ({ 
+            ...prev, 
+            image: `La imagen es demasiado grande. Máximo ${maxSizeInMB}MB permitidos. Tamaño actual: ${(file.size / (1024 * 1024)).toFixed(2)}MB` 
+          }));
+          return;
+        }
+        
+        // Validar tipo de archivo
+        if (!file.type.startsWith('image/')) {
+          setFieldErrors((prev) => ({ 
+            ...prev, 
+            image: 'Solo se permiten archivos de imagen (jpg, png, gif, etc.)' 
+          }));
+          return;
+        }
+      }
+      
       setForm((prev) => ({ ...prev, image: file }));
       setFieldErrors((prev) => ({ ...prev, image: undefined }));
     }

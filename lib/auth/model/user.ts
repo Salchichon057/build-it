@@ -3,14 +3,14 @@ export interface User {
   first_name: string;
   last_name: string;
   email: string;
-  birthdate: string | null;
-  phone: string | null;
-  account_type: "client" | "professional";
-  account_category: "enterprise" | "person";
-  speciality: string | null;
-  cv_url: string | null;
-  profile_image: string | null;
-  address: string | null;
-  experience_years: string | null;
-  created_at?: string;
+  birthdate: string | null; // date opcional
+  phone: string | null; // character varying opcional
+  account_type: "client" | "professional"; // NOT NULL con CHECK constraint
+  account_category: "enterprise" | "person" | null; // opcional con CHECK constraint
+  speciality: string | null; // character varying opcional
+  cv_url: string | null; // text opcional
+  profile_image: string | null; // text opcional
+  address: string | null; // text opcional
+  experience_years: string | null; // text opcional
+  created_at?: string; // timestamp with time zone con DEFAULT
 }

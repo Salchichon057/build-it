@@ -15,6 +15,7 @@ export default function Navbar() {
   const [showModal, setShowModal] = useState(false);
   const [hasNotifications, setHasNotifications] = useState(false);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
   const { session, isLoading } = useSessionContext();
 
@@ -68,9 +69,14 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     const supabase = (await import("@/utils/supabase/client")).createClient();
     const { error } = await supabase.auth.signOut();
-    if (error) console.error("Error signing out:", error);
+    if (error) {
+      console.error("Error signing out:", error);
+      setIsLoggingOut(false);
+      return;
+    }
     router.push("/");
   };
 
@@ -221,9 +227,10 @@ export default function Navbar() {
                   setShowModal(false);
                   await handleLogout();
                 }}
+                disabled={isLoggingOut}
               >
                 <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                Salir
+                {isLoggingOut ? "Cerrando sesión..." : "Salir"}
               </button>
             </div>
           </div>

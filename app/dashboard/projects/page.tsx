@@ -1,4 +1,4 @@
-import { getMyProjectsAction } from "./actions";
+import { getMyProjectsAction } from "@/lib/projects/actions/projectActions";
 import ProjectsPageClient from "@/components/dashboard/projects/ProjectsPageClient";
 import { Project } from "@/lib/projects/model/project";
 

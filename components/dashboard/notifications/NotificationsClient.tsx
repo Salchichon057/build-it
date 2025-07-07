@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "@/styles/dashboard/projects.module.css";
+import Link from "next/link";
+import styles from "@/styles/dashboard/notifications.module.css";
 import { Notification } from "@/lib/notifications/model/notification";
 import { markNotificationAsReadAction, deleteNotificationAction } from "@/lib/notifications/actions/notificationActions";
 
@@ -148,195 +149,190 @@ export default function NotificationsClient({ userId, initialNotifications }: No
 
   const getTypeColor = (type: string) => {
     const typeColors = {
-      project_update: "#3b82f6", // blue
+      project_update: "var(--primary-500, #34A1DE)", // primary blue
       postulation_status: "#10b981", // green
-      message: "#f59e0b", // amber
-      general: "#6b7280" // gray
+      message: "var(--action-300, #FA896B)", // action orange
+      general: "var(--grey-500, #6B7280)" // gray
     };
-    return typeColors[type as keyof typeof typeColors] || "#6b7280";
+    return typeColors[type as keyof typeof typeColors] || "var(--grey-500, #6B7280)";
   };
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
   if (notifications.length === 0 && !loading) {
     return (
-      <div className="flex flex-col min-h-screen">
-        <main className="flex-1 max-w-5xl mx-auto p-5">
-          <h1 className="text-2xl font-bold mb-6">Notificaciones</h1>
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>
-              <i className="fa-regular fa-bell"></i>
-            </div>
-            <h3>No tienes notificaciones</h3>
-            <p>Aquí aparecerán las actualizaciones de tus proyectos y postulaciones.</p>
+      <div className={styles.notificationsContainer}>
+        <div className={styles.notificationsHeader}>
+          <h1 className={styles.notificationsTitle}>Notificaciones</h1>
+          <p className={styles.notificationsSubtitle}>
+            Mantente al día con las actualizaciones de tus proyectos y postulaciones
+          </p>
+        </div>
+        <div className={styles.notificationsEmpty}>
+          <div className={styles.notificationsEmptyIcon}>
+            <i className="fa-regular fa-bell"></i>
           </div>
-        </main>
+          <h3>No tienes notificaciones</h3>
+          <p>Aquí aparecerán las actualizaciones de tus proyectos y postulaciones.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-1 max-w-5xl mx-auto p-5">
-        <div className={styles.pageHeader}>
-          <h1 className="text-2xl font-bold">Notificaciones</h1>
-          <p className={styles.pageSubtitle}>
-            Mantente al día con las actualizaciones de tus proyectos y postulaciones
-          </p>
-        </div>
+    <div className={styles.notificationsContainer}>
+      <div className={styles.notificationsHeader}>
+        <h1 className={styles.notificationsTitle}>Notificaciones</h1>
+        <p className={styles.notificationsSubtitle}>
+          Mantente al día con las actualizaciones de tus proyectos y postulaciones
+        </p>
+      </div>
 
-        {/* Estadísticas y acciones */}
-        <div className={styles.statsSection} style={{ marginBottom: '2rem' }}>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{notifications.length}</div>
-            <div className={styles.statLabel}>Total</div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{unreadCount}</div>
-            <div className={styles.statLabel}>Sin leer</div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{notifications.length - unreadCount}</div>
-            <div className={styles.statLabel}>Leídas</div>
-          </div>
-          {unreadCount > 0 && (
-            <button
-              onClick={markAllAsRead}
-              className={styles.ctaButton}
-              disabled={loading}
-              style={{ marginLeft: 'auto' }}
-            >
-              <i className="fa-solid fa-check-double"></i>
-              Marcar todas como leídas
-            </button>
-          )}
+      {/* Estadísticas y acciones */}
+      <div className={styles.notificationsStats}>
+        <div className={styles.notificationStatCard}>
+          <div className={styles.notificationStatNumber}>{notifications.length}</div>
+          <div className={styles.notificationStatLabel}>Total</div>
         </div>
-
-        {/* Filtros */}
-        <div className={styles.filtersSection}>
-          <div className={styles.filterGroup}>
-            <label htmlFor="type-filter" className={styles.filterLabel}>
-              Filtrar por tipo:
-            </label>
-            <select
-              id="type-filter"
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className={styles.filterSelect}
-            >
-              <option value="all">Todos los tipos</option>
-              <option value="project_update">Actualizaciones de Proyecto</option>
-              <option value="postulation_status">Estados de Postulación</option>
-              <option value="message">Mensajes</option>
-              <option value="general">General</option>
-            </select>
-          </div>
-          
-          <div className={styles.filterGroup}>
-            <label htmlFor="read-filter" className={styles.filterLabel}>
-              Estado de lectura:
-            </label>
-            <select
-              id="read-filter"
-              value={readFilter}
-              onChange={(e) => setReadFilter(e.target.value)}
-              className={styles.filterSelect}
-            >
-              <option value="all">Todas</option>
-              <option value="unread">Sin leer</option>
-              <option value="read">Leídas</option>
-            </select>
-          </div>
+        <div className={styles.notificationStatCard}>
+          <div className={styles.notificationStatNumber}>{unreadCount}</div>
+          <div className={styles.notificationStatLabel}>Sin leer</div>
         </div>
+        <div className={styles.notificationStatCard}>
+          <div className={styles.notificationStatNumber}>{notifications.length - unreadCount}</div>
+          <div className={styles.notificationStatLabel}>Leídas</div>
+        </div>
+        {unreadCount > 0 && (
+          <button
+            onClick={markAllAsRead}
+            className={styles.markAllReadButton}
+            disabled={loading}
+          >
+            <i className="fa-solid fa-check-double"></i>
+            Marcar todas como leídas
+          </button>
+        )}
+      </div>
 
-        {/* Lista de notificaciones */}
-        {filteredNotifications.length === 0 ? (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>
-              <i className="fa-solid fa-filter"></i>
-            </div>
-            <h3>No hay notificaciones con estos filtros</h3>
-            <p>Prueba ajustando los filtros para ver más resultados.</p>
+      {/* Filtros */}
+      <div className={styles.notificationsFilters}>
+        <div className={styles.notificationFilterGroup}>
+          <label htmlFor="type-filter" className={styles.notificationFilterLabel}>
+            Filtrar por tipo:
+          </label>
+          <select
+            id="type-filter"
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+            className={styles.notificationFilterSelect}
+          >
+            <option value="all">Todos los tipos</option>
+            <option value="project_update">Actualizaciones de Proyecto</option>
+            <option value="postulation_status">Estados de Postulación</option>
+            <option value="message">Mensajes</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+        
+        <div className={styles.notificationFilterGroup}>
+          <label htmlFor="read-filter" className={styles.notificationFilterLabel}>
+            Estado de lectura:
+          </label>
+          <select
+            id="read-filter"
+            value={readFilter}
+            onChange={(e) => setReadFilter(e.target.value)}
+            className={styles.notificationFilterSelect}
+          >
+            <option value="all">Todas</option>
+            <option value="unread">Sin leer</option>
+            <option value="read">Leídas</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Lista de notificaciones */}
+      {filteredNotifications.length === 0 ? (
+        <div className={styles.notificationsEmpty}>
+          <div className={styles.notificationsEmptyIcon}>
+            <i className="fa-solid fa-filter"></i>
           </div>
-        ) : (
-          <div className={styles.postulationsList}>
-            {filteredNotifications.map((notification) => (
-              <div 
-                key={notification.id} 
-                className={`${styles.postulationCard} ${!notification.read ? styles.unreadNotification : ''}`}
-              >
-                <div className={styles.postulationHeader}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <div 
-                      style={{ 
-                        backgroundColor: getTypeColor(notification.type),
-                        borderRadius: '50%',
-                        width: '40px',
-                        height: '40px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white'
-                      }}
-                    >
-                      <i className={getTypeIcon(notification.type)}></i>
-                    </div>
-                    <div>
-                      <h3 className={styles.projectTitle}>{notification.title}</h3>
-                      <span className={styles.notificationType}>
-                        {getTypeLabel(notification.type)}
-                      </span>
-                    </div>
+          <h3>No hay notificaciones con estos filtros</h3>
+          <p>Prueba ajustando los filtros para ver más resultados.</p>
+        </div>
+      ) : (
+        <div className={styles.notificationsList}>
+          {filteredNotifications.map((notification) => (
+            <div 
+              key={notification.id} 
+              className={`${styles.notificationCard} ${!notification.read ? styles.unread : ''}`}
+            >
+              <div className={styles.notificationHeader}>
+                <div className={styles.notificationInfo}>
+                  <div 
+                    className={styles.notificationTypeIcon}
+                    style={{ backgroundColor: getTypeColor(notification.type) }}
+                  >
+                    <i className={getTypeIcon(notification.type)}></i>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    {!notification.read && (
-                      <span 
-                        style={{
-                          width: '8px',
-                          height: '8px',
-                          backgroundColor: '#ef4444',
-                          borderRadius: '50%'
-                        }}
-                      ></span>
-                    )}
-                    <span className={styles.notificationDate}>
-                      {formatDate(notification.created_at)}
+                  <div className={styles.notificationDetails}>
+                    <h3>{notification.title}</h3>
+                    <span className={styles.notificationTypeLabel}>
+                      {getTypeLabel(notification.type)}
                     </span>
                   </div>
                 </div>
-
-                <div className={styles.postulationContent}>
-                  <p className={styles.notificationMessage}>
-                    {notification.message}
-                  </p>
-                </div>
-
-                <div className={styles.postulationActions}>
+                <div className={styles.notificationMeta}>
                   {!notification.read && (
-                    <button
-                      onClick={() => handleMarkAsRead(notification.id)}
-                      className={styles.markReadButton}
-                      disabled={loading}
-                    >
-                      <i className="fa-solid fa-check"></i>
-                      Marcar como leída
-                    </button>
+                    <span className={styles.notificationUnreadBadge}></span>
                   )}
-                  
-                  <button
-                    onClick={() => handleDelete(notification.id)}
-                    className={styles.deleteButton}
-                    disabled={loading}
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                    Eliminar
-                  </button>
+                  <span className={styles.notificationDate}>
+                    {formatDate(notification.created_at)}
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-      </main>
+
+              <div className={styles.notificationContent}>
+                <p className={styles.notificationMessage}>
+                  {notification.message}
+                </p>
+              </div>
+
+              <div className={styles.notificationActions}>
+                {!notification.read && (
+                  <button
+                    onClick={() => handleMarkAsRead(notification.id)}
+                    className={`${styles.notificationButton} ${styles.markReadButton}`}
+                    disabled={loading}
+                  >
+                    <i className="fa-solid fa-check"></i>
+                    Marcar como leída
+                  </button>
+                )}
+                
+                {notification.action_url && (
+                  <Link
+                    href={notification.action_url}
+                    className={`${styles.notificationButton} ${styles.actionButton}`}
+                  >
+                    <i className="fa-solid fa-external-link-alt"></i>
+                    Ver detalles
+                  </Link>
+                )}
+                
+                <button
+                  onClick={() => handleDelete(notification.id)}
+                  className={`${styles.notificationButton} ${styles.deleteButton}`}
+                  disabled={loading}
+                >
+                  <i className="fa-solid fa-trash"></i>
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@ export const notificationService = {
     markAsRead: async (id: string): Promise<Notification> => {
         return await notificationRepository.markAsRead(id);
     },
-    create: async (notification: Omit<Notification, "id" | "created_at" | "read">): Promise<Notification> => {
+    create: async (notification: Omit<Notification, "id" | "created_at" | "read">): Promise<Notification | null> => {
         // Puedes setear read: false aquí si quieres
         return await notificationRepository.create({ ...notification, read: false });
     },

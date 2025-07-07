@@ -78,8 +78,8 @@ export async function createPostulationAction(projectId: string) {
         await notificationService.create({
             user_id: project.users_id, // Cliente dueño del proyecto
             type: "postulation_status",
-            title: "Nueva postulación recibida",
-            message: `Un profesional se ha postulado a tu proyecto "${project.title}". Revisa su perfil y considera su propuesta.`
+            title: "🔨 Nueva postulación recibida",
+            message: `Un profesional está interesado en tu proyecto "${project.title}". Revisa su perfil y contacta por WhatsApp para discutir detalles.`
         });
     }
     

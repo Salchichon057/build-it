@@ -3,7 +3,7 @@ import { useState } from "react";
 import ProjectList from "@/components/projects/ProjectList";
 import ProjectFormModal from "@/components/projects/ProjectFormModal";
 import styles from "@/styles/dashboard/projects.module.css";
-import { createProjectAction, saveProjectAction } from "@/app/dashboard/projects/actions";
+import { createProjectAction, saveProjectAction } from "@/lib/projects/actions/projectActions";
 import { Project } from "@/lib/projects/model/project";
 
 interface ProjectsPageClientProps {

@@ -16,6 +16,7 @@
     "autoprefixer": "10.4.20",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^17.0.1",
     "lucide-react": "^0.468.0",
     "next": "latest",
     "prettier": "^3.3.3",
