@@ -5,10 +5,12 @@ import { z } from "zod";
 import styles from "@/styles/dashboard/projects.module.css";
 import { InputGroup } from "../InputGroup";
 import { getCategoriesAction } from "@/lib/categories/actions/categoryActions";
+import { Project } from "@/lib/projects/model/project";
 
 interface ProjectFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
   onClose: () => void;
+  project?: Project; // Proyecto para editar (opcional)
 }
 
 type FormState = {
@@ -22,15 +24,15 @@ type FormState = {
   image: File | null;
 };
 
-export default function ProjectForm({ onSubmit, onClose }: ProjectFormProps) {
+export default function ProjectForm({ onSubmit, onClose, project }: ProjectFormProps) {
   const [form, setForm] = useState<FormState>({
-    title: "",
-    description: "",
-    budget: "",
-    location: "",
-    start_date: "",
-    end_date: "",
-    category_id: "",
+    title: project?.title || "",
+    description: project?.description || "",
+    budget: project?.budget ? project.budget.toString() : "",
+    location: project?.location || "",
+    start_date: project?.start_date || "",
+    end_date: project?.end_date || "",
+    category_id: project?.category_id || "",
     image: null,
   });
   const [categories, setCategories] = useState<{value: string, label: string}[]>([]);
@@ -158,6 +160,12 @@ export default function ProjectForm({ onSubmit, onClose }: ProjectFormProps) {
 
     // Envía el formData real
     const formData = new FormData();
+    
+    // Si es edición, agregar el project_id
+    if (project) {
+      formData.append('project_id', project.id);
+    }
+    
     Object.entries(form).forEach(([key, value]) => {
       if (key === 'image' && value instanceof File) {
         // Agregar archivo de imagen
@@ -182,7 +190,7 @@ export default function ProjectForm({ onSubmit, onClose }: ProjectFormProps) {
 
   return (
     <form className={styles.projectForm} onSubmit={handleSubmit} noValidate>
-      <h2>Nuevo Proyecto</h2>
+      <h2>{project ? "Editar Proyecto" : "Nuevo Proyecto"}</h2>
 
       <InputGroup
         label="Título"
@@ -298,7 +306,10 @@ export default function ProjectForm({ onSubmit, onClose }: ProjectFormProps) {
           Cancelar
         </button>
         <button type="submit" disabled={pending}>
-          {pending ? "Creando..." : "Crear"}
+          {pending 
+            ? (project ? "Editando..." : "Creando...") 
+            : (project ? "Editar" : "Crear")
+          }
         </button>
       </div>
     </form>

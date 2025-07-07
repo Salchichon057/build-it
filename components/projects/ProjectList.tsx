@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation";
 
 interface ProjectListProps {
   projects: Project[];
+  onEdit?: (project: Project) => void;
 }
 
-export default function ProjectList({ projects }: ProjectListProps) {
+export default function ProjectList({ projects, onEdit }: ProjectListProps) {
   const router = useRouter();
 
   if (!projects.length) {
@@ -22,6 +23,7 @@ export default function ProjectList({ projects }: ProjectListProps) {
           key={project.id}
           project={project}
           onDeleted={() => router.refresh()}
+          onEdit={onEdit}
         />
       ))}
     </div>

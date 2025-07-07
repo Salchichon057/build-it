@@ -3,7 +3,7 @@ import { useState } from "react";
 import ProjectList from "@/components/projects/ProjectList";
 import ProjectFormModal from "@/components/projects/ProjectFormModal";
 import styles from "@/styles/dashboard/projects.module.css";
-import { createProjectAction } from "@/app/dashboard/projects/actions";
+import { createProjectAction, saveProjectAction } from "@/app/dashboard/projects/actions";
 import { Project } from "@/lib/projects/model/project";
 
 interface ProjectsPageClientProps {
@@ -14,6 +14,17 @@ export default function ProjectsPageClient({
   projects,
 }: ProjectsPageClientProps) {
   const [open, setOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | undefined>(undefined);
+
+  const handleEdit = (project: Project) => {
+    setEditingProject(project);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setEditingProject(undefined);
+  };
 
   return (
     <div className={styles.container}>
@@ -23,13 +34,14 @@ export default function ProjectsPageClient({
           <i className="fa-solid fa-plus"></i> Agregar Proyecto
         </button>
       </div>
-      <ProjectList projects={projects} />
+      <ProjectList projects={projects} onEdit={handleEdit} />
       <ProjectFormModal
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
+        project={editingProject}
         onSubmit={async (formData) => {
-          await createProjectAction(formData);
-          setOpen(false);
+          await saveProjectAction(formData);
+          handleClose();
           window.location.reload();
         }}
       />

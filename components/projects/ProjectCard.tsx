@@ -7,9 +7,10 @@ import { deleteProjectAction } from "@/lib/projects/actions/projectActions";
 interface ProjectCardProps {
   project: Project;
   onDeleted?: () => void;
+  onEdit?: (project: Project) => void;
 }
 
-export default function ProjectCard({ project, onDeleted }: ProjectCardProps) {
+export default function ProjectCard({ project, onDeleted, onEdit }: ProjectCardProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [pending, setPending] = useState(false);
 
@@ -61,13 +62,22 @@ export default function ProjectCard({ project, onDeleted }: ProjectCardProps) {
                   : "Cancelado"}
           </span>
         </div>
-        <button
-          className={styles.deleteBtn}
-          onClick={() => setShowConfirm(true)}
-          title="Eliminar"
-        >
-          <i className="fa-solid fa-trash"></i>
-        </button>
+        <div className={styles.cardActions}>
+          <button
+            className={styles.editBtn}
+            onClick={() => onEdit?.(project)}
+            title="Editar"
+          >
+            <i className="fa-solid fa-pen"></i>
+          </button>
+          <button
+            className={styles.deleteBtn}
+            onClick={() => setShowConfirm(true)}
+            title="Eliminar"
+          >
+            <i className="fa-solid fa-trash"></i>
+          </button>
+        </div>
       </div>
       <p className={styles.cardDescription}>{project.description}</p>
       <div className={styles.cardMeta}>
