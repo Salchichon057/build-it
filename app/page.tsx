@@ -17,39 +17,34 @@ export default function Home() {
   // Datos para los carruseles
   const clientSlides = [
     {
-      image: "/landing/client_01.png",
+      image: "/landing/slide_client_01.png",
       title: "Publica tu proyecto",
       description: "Describe tu proyecto con detalles, presupuesto y fechas.",
     },
     {
-      image: "/landing/client_02.png",
-      title: "Recibe postulaciones",
-      description: "Los profesionales interesados enviarán sus propuestas.",
+      image: "/landing/slide_client_02.png",
+      title: "Maneja tus proyectos",
+      description: "Podrás gestionar tus proyectos y recibir propuestas.",
     },
     {
-      image: "/landing/client_03.png",
+      image: "/landing/slide_client_03.png",
       title: "Selecciona al mejor",
-      description: "Revisa perfiles, propuestas y elige al profesional ideal.",
+      description: "Revisa perfiles y elige al profesional ideal.",
     },
   ];
 
   const professionalSlides = [
     {
-      image: "/landing/professional_01.jpeg",
+      image: "/landing/slide_professional_01.png",
       title: "Explora proyectos",
       description:
         "Navega por proyectos disponibles que coincidan con tu especialidad.",
     },
     {
-      image: "/landing/professional_02.jpg",
+      image: "/landing/slide_professional_02.png",
       title: "Envía tu propuesta",
-      description: "Postúlate con tu mejor propuesta y muestra tu experiencia.",
-    },
-    {
-      image: "/landing/professional_03.jpeg",
-      title: "Ejecuta el proyecto",
-      description: "Si eres seleccionado, comienza a trabajar en el proyecto.",
-    },
+      description: "Conectate con clientes vía whatsapp y envía tu propuesta.",
+    }
   ];
 
   // Detección de sección activa basada en scroll
