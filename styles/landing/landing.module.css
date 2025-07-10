@@ -1,18 +1,75 @@
 .landing {
     color: #02273A;
     text-align: center;
+    padding-top: 0; /* Remover padding superior para que hero esté hasta arriba */
 }
 
 .header {
-    background-color: #ffffffd5;
-    color: #02273A;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
     z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* Navbar transparente cuando está en la posición inicial */
+.headerTransparent {
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.headerTransparent .nav {
+    color: #02273A;
+}
+
+.headerTransparent .navLinks li button,
+.headerTransparent .authLinks li a {
+    color: #02273A;
+    font-weight: 600;
+}
+
+.headerTransparent .navLinks li button:hover,
+.headerTransparent .authLinks li a:hover {
+    color: #34A1DE;
+    transform: translateY(-2px);
+}
+
+.headerTransparent .navLinks li button.active {
+    color: #34A1DE;
+}
+
+/* Navbar sólida cuando se hace scroll */
+.headerScrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(2, 39, 58, 0.1);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.headerScrolled .nav {
+    color: #02273A;
+}
+
+.headerScrolled .navLinks li button,
+.headerScrolled .authLinks li a {
+    color: #02273A;
+    text-shadow: none;
+}
+
+.headerScrolled .navLinks li button:hover,
+.headerScrolled .authLinks li a:hover {
+    color: #34A1DE;
+}
+
+.headerScrolled .navLinks li button.active {
+    color: #34A1DE;
+    text-shadow: none;
 }
 
 .nav {
@@ -25,6 +82,17 @@
 .nav img {
     width: 100px;
     height: auto;
+    transition: all 0.3s ease;
+}
+
+/* Logo con mejor contraste cuando navbar es transparente */
+.headerTransparent .nav img {
+    filter: drop-shadow(0 1px 4px rgba(255, 255, 255, 0.3));
+}
+
+/* Logo normal cuando navbar tiene fondo */
+.headerScrolled .nav img {
+    filter: none;
 }
 
 .navLinks {
@@ -124,10 +192,17 @@
 /* ! MAIN */
 .hero {
     position: relative;
-    min-height: 70vh;
+    min-height: 100vh;
     background-image: url('/landing/hero.png');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 0;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .heroContent {
@@ -140,6 +215,7 @@
     height: 100%;
     text-align: center;
     padding: 2rem 2rem 0 2rem;
+    margin-top: 80px; /* Compensar por la navbar fixed */
 }
 
 .heroContent img {

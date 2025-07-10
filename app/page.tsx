@@ -13,6 +13,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("inicio");
   const [currentSlideClient, setCurrentSlideClient] = useState(0);
   const [currentSlideProfessional, setCurrentSlideProfessional] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Datos para los carruseles
   const clientSlides = [
@@ -50,9 +51,15 @@ export default function Home() {
   // Detección de sección activa basada en scroll
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["inicio", "mision", "beneficios", "como-funciona"];
+      const scrollPosition = window.scrollY;
       const headerHeight = 80; // Altura aproximada del header sticky
-      const scrollPosition = window.scrollY + headerHeight + 50;
+      
+      // Detectar si se ha hecho scroll para cambiar el estilo de la navbar
+      setIsScrolled(scrollPosition > 50);
+      
+      // Detección de sección activa
+      const sections = ["inicio", "mision", "beneficios", "como-funciona"];
+      const adjustedScrollPosition = scrollPosition + headerHeight + 50;
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -61,8 +68,8 @@ export default function Home() {
           const height = element.offsetHeight;
 
           if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + height
+            adjustedScrollPosition >= offsetTop &&
+            adjustedScrollPosition < offsetTop + height
           ) {
             setActiveSection(section);
             break;
@@ -119,7 +126,7 @@ export default function Home() {
   };
   return (
     <div className={styles.landing}>
-      <header className={styles.header}>
+      <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : styles.headerTransparent}`}>
         <nav className={styles.nav}>
           <img src="/logo.svg" alt="Logo de BuildIt" />
           <ul className={styles.navLinks}>
