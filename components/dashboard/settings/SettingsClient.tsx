@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/styles/dashboard/settings.module.css";
 import type { User } from "@/lib/auth/model/user";
+import { APP_CONFIG } from "@/lib/config/app";
 
 interface SettingsClientProps {
   profile: User;
@@ -217,7 +218,7 @@ export default function SettingsClient({ profile }: SettingsClientProps) {
                       <i className="fa-solid fa-envelope"></i>
                       <div>
                         <strong>Correo de soporte</strong>
-                        <span>soporte@buildit.mx</span>
+                        <span>{APP_CONFIG.email.support}</span>
                       </div>
                     </div>
                     <div className={styles.contactItem}>

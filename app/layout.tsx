@@ -1,31 +1,22 @@
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "./globals.css";
+import { APP_CONFIG } from "../lib/config/app";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const defaultUrl = APP_CONFIG.baseUrl;
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: {
-    default: "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
-    template: "%s | BuildIt"
+    default: APP_CONFIG.name + " - " + APP_CONFIG.slogan,
+    template: `%s | ${APP_CONFIG.name}`
   },
-  description:
-    "Conecta con arquitectos, diseñadores y constructores verificados. Publica tu proyecto, recibe propuestas y selecciona al mejor profesional para hacer realidad tu obra. ¡Únete a BuildIt!",
-  keywords: [
-    "arquitectos", "diseñadores", "constructores", "proyectos construcción", 
-    "profesionales construcción", "obras", "reformas", "construcción casa",
-    "presupuestos construcción", "contratistas", "albañiles", "decoradores",
-    "ingenieros", "plataforma construcción", "BuildIt", "México", "profesionales verificados",
-    "construcción residencial", "construcción comercial", "renovaciones", "proyectos obra",
-    "construcción mexico", "obras mexico", "arquitectos mexico", "constructores mexico"
-  ],
+  description: APP_CONFIG.description + ". Publica tu proyecto, recibe propuestas y selecciona al mejor profesional para hacer realidad tu obra. ¡Únete a BuildIt!",
+  keywords: APP_CONFIG.keywords,
   authors: [{ name: "BuildIt Team", url: defaultUrl }],
-  creator: "BuildIt",
-  publisher: "BuildIt",
-  applicationName: "BuildIt",
+  creator: APP_CONFIG.name,
+  publisher: APP_CONFIG.name,
+  applicationName: APP_CONFIG.name,
   robots: {
     index: true,
     follow: true,
@@ -39,11 +30,11 @@ export const metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "es_MX",
+    locale: APP_CONFIG.locale,
     url: defaultUrl,
-    title: "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
-    description: "Conecta con arquitectos, diseñadores y constructores verificados en México. Publica tu proyecto, recibe propuestas y encuentra al profesional ideal para tu obra.",
-    siteName: "BuildIt",
+    title: APP_CONFIG.name + " - " + APP_CONFIG.slogan,
+    description: APP_CONFIG.description + " en México. Publica tu proyecto, recibe propuestas y encuentra al profesional ideal para tu obra.",
+    siteName: APP_CONFIG.name,
     images: [
       {
         url: "/landing/hero.png",
@@ -56,11 +47,11 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@BuildItMX",
-    title: "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
+    site: APP_CONFIG.social.x.handle,
+    title: APP_CONFIG.name + " - " + APP_CONFIG.slogan,
     description: "Conecta con profesionales de la construcción verificados. Publica tu proyecto y encuentra al mejor profesional. ¡Únete ahora!",
     images: ["/landing/hero.png"],
-    creator: "@BuildItMX",
+    creator: APP_CONFIG.social.x.handle,
   },
   category: "construction",
   manifest: "/manifest.json",
@@ -183,9 +174,8 @@ export default function RootLayout({
                 }
               ],
               "sameAs": [
-                "https://twitter.com/BuildItMX",
-                "https://facebook.com/BuildItMX", 
-                "https://linkedin.com/company/buildit-mx"
+                APP_CONFIG.social.x.url,
+                APP_CONFIG.social.instagram.url
               ],
               "publisher": {
                 "@type": "Organization",

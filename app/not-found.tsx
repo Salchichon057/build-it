@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import styles from '@/styles/404.module.css';
+import { APP_CONFIG } from '@/lib/config/app';
 
 export const metadata = {
   title: "Página no encontrada - BuildIt",
@@ -55,7 +56,7 @@ export default function NotFound() {
             </li>
             <li>
               <i className="fa-solid fa-envelope"></i>
-              Contactar nuestro soporte en <strong>soporte@buildit.mx</strong>
+              Contactar nuestro soporte en <strong>{APP_CONFIG.email.support}</strong>
             </li>
             <li>
               <i className="fa-solid fa-search"></i>
