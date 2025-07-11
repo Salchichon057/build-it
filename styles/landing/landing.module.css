@@ -1,7 +1,8 @@
 .landing {
     color: #02273A;
     text-align: center;
-    padding-top: 0; /* Remover padding superior para que hero esté hasta arriba */
+    padding-top: 0;
+    /* Remover padding superior para que hero esté hasta arriba */
 }
 
 .header {
@@ -19,29 +20,32 @@
 
 /* Navbar transparente cuando está en la posición inicial */
 .headerTransparent {
-    background-color: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
 }
 
 .headerTransparent .nav {
-    color: #02273A;
+    color: white;
 }
 
 .headerTransparent .navLinks li button,
 .headerTransparent .authLinks li a {
-    color: #02273A;
+    color: white;
     font-weight: 600;
+    /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); */
 }
 
 .headerTransparent .navLinks li button:hover,
 .headerTransparent .authLinks li a:hover {
-    color: #34A1DE;
+    color: white;
     transform: translateY(-2px);
+    /* text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); */
 }
 
 .headerTransparent .navLinks li button.active {
-    color: #34A1DE;
+    color: white;
+    /* text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); */
 }
 
 /* Navbar sólida cuando se hace scroll */
@@ -86,9 +90,9 @@
 }
 
 /* Logo con mejor contraste cuando navbar es transparente */
-.headerTransparent .nav img {
-    filter: drop-shadow(0 1px 4px rgba(255, 255, 255, 0.3));
-}
+/* .headerTransparent .nav img {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+} */
 
 /* Logo normal cuando navbar tiene fondo */
 .headerScrolled .nav img {
@@ -117,22 +121,26 @@
     text-decoration: none;
     transition: all 0.3s ease;
     cursor: pointer;
-    color: #02273A;
     padding: 0.5rem 1rem;
     border-radius: 5px;
     position: relative;
 }
 
-.navLinks li button:hover {
+/* Colores por defecto cuando hay fondo scrolled */
+.headerScrolled .navLinks li button {
+    color: #02273A;
+}
+
+.headerScrolled .navLinks li button:hover {
     color: #3498db;
 }
 
-/* Indicador activo con bottom line */
-.navLinks li button.active {
+/* Indicador activo con bottom line para fondo scrolled */
+.headerScrolled .navLinks li button.active {
     color: #3498db;
 }
 
-.navLinks li button.active::after {
+.headerScrolled .navLinks li button.active::after {
     content: '';
     position: absolute;
     bottom: -0.5rem;
@@ -141,6 +149,19 @@
     width: 100%;
     height: 3px;
     background-color: #3498db;
+    border-radius: 2px;
+}
+
+/* Indicador activo para navbar transparente */
+.headerTransparent .navLinks li button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 3px;
+    background-color: white;
     border-radius: 2px;
 }
 
@@ -156,19 +177,37 @@
     transition: color 0.3s ease;
 }
 
-.authLinks li:nth-child(2) a {
+/* Botón de registro cuando navbar es transparente */
+.headerTransparent .authLinks li:nth-child(2) a {
     background-color: #02273A;
     color: white;
     padding: 0.5rem 2rem;
     border-radius: 100px;
-    transition: background-color 0.3s ease;
+    border: 2px solid #02273A;
+    transition: all 0.3s ease;
 }
 
-.authLinks li a:hover {
+.headerTransparent .authLinks li:nth-child(2) a:hover {
+    background-color: #34495e;
+    color: white;
+    border: 2px solid #34495e;
+}
+
+/* Botón de registro cuando navbar tiene fondo */
+.headerScrolled .authLinks li:nth-child(2) a {
+    background-color: #02273A;
+    color: white;
+    padding: 0.5rem 2rem;
+    border-radius: 100px;
+    border: 2px solid #02273A;
+    transition: all 0.3s ease;
+}
+
+.headerScrolled .authLinks li a:hover {
     color: #3498db;
 }
 
-.authLinks li:nth-child(2) a:hover {
+.headerScrolled .authLinks li:nth-child(2) a:hover {
     background-color: #34495e;
     color: white;
 }
@@ -215,7 +254,8 @@
     height: 100%;
     text-align: center;
     padding: 2rem 2rem 0 2rem;
-    margin-top: 80px; /* Compensar por la navbar fixed */
+    margin-top: 80px;
+    /* Compensar por la navbar fixed */
 }
 
 .heroContent img {
@@ -324,12 +364,12 @@
         text-align: center;
         padding: 2rem 0.5rem 0 0.5rem;
     }
-    
+
     .heroContent img {
         width: 50px;
         margin: 0 0 1rem 0;
     }
-    
+
     .heroText h2 {
         font-size: 1.5rem;
     }
