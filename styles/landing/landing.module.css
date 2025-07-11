@@ -259,7 +259,7 @@
     margin-top: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
 }
 
@@ -332,9 +332,19 @@
         background-position: left;
     }
 
+    .heroContent {
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        padding: 2rem 1rem 0 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+
     .heroText {
-        margin-left: 3rem;
-        align-items: flex-start;
+        width: 100%;
+        margin-left: 0;
+        align-items: center;
         text-align: left;
     }
 
@@ -342,10 +352,12 @@
         font-size: 1.5rem;
         margin: 0 1rem 1.5rem 0;
         max-width: 400px;
+        text-align: center;
     }
 
     .heroText h2 {
         font-size: 2rem;
+        text-align: center;
     }
 
     .heroText p {
