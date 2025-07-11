@@ -1,6 +1,6 @@
-// Constantes de la aplicación BuildIt
+// Constantes de la aplicación Buildit
 export const APP_CONFIG = {
-  name: "BuildIt",
+  name: "Buildit",
   slogan: "De la Idea a la Obra con los Mejores Profesionales",
   description: "Conecta con arquitectos, diseñadores y constructores verificados en México",
   
@@ -34,7 +34,7 @@ export const APP_CONFIG = {
     "arquitectos", "diseñadores", "constructores", "proyectos construcción", 
     "profesionales construcción", "obras", "reformas", "construcción casa",
     "presupuestos construcción", "contratistas", "albañiles", "decoradores",
-    "ingenieros", "plataforma construcción", "BuildIt", "México", "profesionales verificados",
+    "ingenieros", "plataforma construcción", "Buildit", "México", "profesionales verificados",
     "construcción residencial", "construcción comercial", "renovaciones", "proyectos obra",
     "construcción mexico", "obras mexico", "arquitectos mexico", "constructores mexico"
   ],

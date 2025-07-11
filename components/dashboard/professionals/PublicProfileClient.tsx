@@ -44,7 +44,7 @@ export default function PublicProfileClient({ professional, skills }: PublicProf
       const cleanPhone = professional.phone.replace(/[\s\-\(\)]/g, '');
       
       // Mensaje predefinido
-      const message = `Hola ${professional.first_name}, te contacto desde BuildIt. Me interesa conocer más sobre tus servicios profesionales.`;
+      const message = `Hola ${professional.first_name}, te contacto desde Buildit. Me interesa conocer más sobre tus servicios profesionales.`;
       
       // Crear la URL de WhatsApp
       const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;

@@ -102,7 +102,7 @@ export default function AvailableProjectsClient({ projects, currentUser }: Avail
 
 El cliente ${project.users?.first_name} ${project.users?.last_name} no ha registrado un número de teléfono en su perfil.
 
-💡 Sugerencia: Puedes ver otros proyectos disponibles o contactar al cliente a través de BuildIt cuando actualice su información de contacto.`);
+💡 Sugerencia: Puedes ver otros proyectos disponibles o contactar al cliente a través de Buildit cuando actualice su información de contacto.`);
       return null;
     }
 
@@ -112,7 +112,7 @@ El cliente ${project.users?.first_name} ${project.users?.last_name} no ha regist
     
     const message = `¡Hola ${clientName}! 👋
 
-Mi nombre es ${professionalName} y soy un profesional de la construcción. He visto tu proyecto "${projectTitle}" en BuildIt y me interesa mucho poder colaborar contigo.
+Mi nombre es ${professionalName} y soy un profesional de la construcción. He visto tu proyecto "${projectTitle}" en Buildit y me interesa mucho poder colaborar contigo.
 
 Me gustaría conversar sobre:
 • Los detalles específicos del proyecto
@@ -126,7 +126,7 @@ Me gustaría conversar sobre:
 
 Saludos,
 ${professionalName}
-BuildIt Platform`;
+Buildit Platform`;
 
     const encodedMessage = encodeURIComponent(message);
     const phoneNumber = project.users.phone.replace(/\D/g, ''); // Remover caracteres no numéricos

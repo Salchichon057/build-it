@@ -91,7 +91,7 @@ export default function Navbar() {
         <Link href="/" className={styles.logo}>
           <img
             src="/logo.svg"
-            alt="Logo de BuildIt"
+            alt="Logo de Buildit"
             className="w-24 h-auto m-4"
           />
         </Link>

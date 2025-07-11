@@ -11,9 +11,9 @@ export const metadata = {
     default: APP_CONFIG.name + " - " + APP_CONFIG.slogan,
     template: `%s | ${APP_CONFIG.name}`
   },
-  description: APP_CONFIG.description + ". Publica tu proyecto, recibe propuestas y selecciona al mejor profesional para hacer realidad tu obra. ¡Únete a BuildIt!",
+  description: APP_CONFIG.description + ". Publica tu proyecto, recibe propuestas y selecciona al mejor profesional para hacer realidad tu obra. ¡Únete a Buildit!",
   keywords: APP_CONFIG.keywords,
-  authors: [{ name: "BuildIt Team", url: defaultUrl }],
+  authors: [{ name: "Buildit Team", url: defaultUrl }],
   creator: APP_CONFIG.name,
   publisher: APP_CONFIG.name,
   applicationName: APP_CONFIG.name,
@@ -40,7 +40,7 @@ export const metadata = {
         url: "/landing/hero.png",
         width: 1200,
         height: 630,
-        alt: "BuildIt - Plataforma de profesionales de construcción",
+        alt: "Buildit - Plataforma de profesionales de construcción",
         type: "image/png",
       },
     ],
@@ -124,8 +124,8 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": ["WebSite", "Service"],
-              "name": "BuildIt",
-              "alternateName": "BuildIt - Plataforma de Construcción",
+              "name": "Buildit",
+              "alternateName": "Buildit - Plataforma de Construcción",
               "url": process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000",
               "description": "Conecta con arquitectos, diseñadores y constructores verificados para tu proyecto de construcción",
               "serviceType": "Construction Professional Network",
@@ -170,7 +170,7 @@ export default function RootLayout({
                 {
                   "@type": "RegisterAction",
                   "target": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/sign-up`,
-                  "name": "Registrarse en BuildIt"
+                  "name": "Registrarse en Buildit"
                 }
               ],
               "sameAs": [
@@ -180,7 +180,7 @@ export default function RootLayout({
               "publisher": {
                 "@type": "Organization",
                 "@id": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}#organization`,
-                "name": "BuildIt",
+                "name": "Buildit",
                 "logo": {
                   "@type": "ImageObject",
                   "url": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/logo.svg`,
@@ -197,8 +197,8 @@ export default function RootLayout({
               "mainEntity": {
                 "@type": "WebPage",
                 "@id": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}#webpage`,
-                "name": "BuildIt - De la Idea a la Obra con los Mejores Profesionales",
-                "description": "Landing page de BuildIt donde puedes conectar con profesionales de la construcción",
+                "name": "Buildit - De la Idea a la Obra con los Mejores Profesionales",
+                "description": "Landing page de Buildit donde puedes conectar con profesionales de la construcción",
                 "primaryImageOfPage": {
                   "@type": "ImageObject",
                   "url": `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/landing/hero.png`

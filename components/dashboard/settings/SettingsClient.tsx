@@ -243,7 +243,7 @@ export default function SettingsClient({ profile }: SettingsClientProps) {
                   <div className={styles.systemInfo}>
                     <div className={styles.systemItem}>
                       <span>Versión de la aplicación:</span>
-                      <span>BuildIt v1.0.0</span>
+                      <span>Buildit v1.0.0</span>
                     </div>
                     <div className={styles.systemItem}>
                       <span>Última actualización:</span>

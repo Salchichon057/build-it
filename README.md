@@ -1,4 +1,4 @@
-# 🏗️ BuildIt - Plataforma de Construcción
+# 🏗️ Buildit - Plataforma de Construcción
 
 **Plataforma web moderna que conecta clientes con profesionales de la construcción**
 
@@ -14,7 +14,7 @@
 
 ## 🚀 Características
 
-**BuildIt** es una plataforma integral que facilita la conexión entre:
+**Buildit** es una plataforma integral que facilita la conexión entre:
 - 👥 **Clientes**: Publican proyectos de construcción y reciben postulaciones
 - 🔨 **Profesionales**: Exploran proyectos disponibles y postulan a oportunidades
 

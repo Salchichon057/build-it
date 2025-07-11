@@ -4,7 +4,7 @@ import { SOCIAL_LINKS } from "../lib/config/app";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const copyrightText = `© ${currentYear} BuildIt. Todos los Derechos Reservados`;
+  const copyrightText = `© ${currentYear} Buildit. Todos los Derechos Reservados`;
 
   return (
     <footer className={styles.footer}>

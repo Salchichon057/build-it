@@ -3,8 +3,8 @@ import styles from '@/styles/404.module.css';
 import { APP_CONFIG } from '@/lib/config/app';
 
 export const metadata = {
-  title: "Página no encontrada - BuildIt",
-  description: "La página que buscas no existe. Regresa al inicio o explora BuildIt para encontrar profesionales de la construcción.",
+  title: "Página no encontrada - Buildit",
+  description: "La página que buscas no existe. Regresa al inicio o explora Buildit para encontrar profesionales de la construcción.",
 };
 
 export default function NotFound() {
@@ -12,7 +12,7 @@ export default function NotFound() {
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.logoSection}>
-          <img src="/logo.svg" alt="BuildIt Logo" className={styles.logo} />
+          <img src="/logo.svg" alt="Buildit Logo" className={styles.logo} />
         </div>
         
         <div className={styles.errorSection}>

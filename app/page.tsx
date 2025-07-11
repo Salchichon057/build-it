@@ -128,7 +128,7 @@ export default function Home() {
     <div className={styles.landing}>
       <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : styles.headerTransparent}`}>
         <nav className={styles.nav}>
-          <img src="/logo.svg" alt="Logo de BuildIt" />
+          <img src="/logo.svg" alt="Logo de Buildit" />
           <ul className={styles.navLinks}>
             <li>
               <button
@@ -178,13 +178,13 @@ export default function Home() {
           <div className={styles.heroContent}>
             <img
               src="/max_logo.svg"
-              alt="Logo de BuildIt"
+              alt="Logo de Buildit"
               className={styles.logo}
             />
-            <h1>BuildIt</h1>
+            <h1>Buildit</h1>
           </div>
           <div className={styles.heroText}>
-            <h2>De la Idea a la Obra con los Mejores Profesionales</h2>
+            <h2>De la idea a la obra con los mejores profesionales</h2>
             <p>
               Arquitectos, diseñadores y constructores listos para hacer
               realidad tu proyecto.
