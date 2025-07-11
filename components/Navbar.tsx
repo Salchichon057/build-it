@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSessionContext } from "@supabase/auth-helpers-react";
+import Logo from "@/components/Logo";
 import styles from "@/styles/navbar.module.css";
 import type { User } from "@/lib/auth/model/user";
 import { getUserProfile } from "@/lib/auth/service/authService.client";
@@ -89,10 +90,10 @@ export default function Navbar() {
     <header className={styles.header}>
       <nav className={styles.navbar}>
         <Link href="/" className={styles.logo}>
-          <img
-            src="/logo.svg"
-            alt="Logo de Buildit"
-            className="w-24 h-auto m-4"
+          <Logo
+            width={96}
+            height={40}
+            className="m-4"
           />
         </Link>
         <button

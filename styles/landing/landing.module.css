@@ -99,6 +99,25 @@
     filter: none;
 }
 
+/* Estilos para el logo SVG */
+.logo {
+    width: 100px;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+/* Logo blanco cuando navbar es transparente */
+.headerTransparent .logo {
+    color: white;
+    /* filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); */
+}
+
+/* Logo oscuro cuando navbar tiene fondo */
+.headerScrolled .logo {
+    color: #02273A;
+    filter: none;
+}
+
 .navLinks {
     display: flex;
     gap: 1.5rem;

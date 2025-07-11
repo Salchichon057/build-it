@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import Logo from "@/components/Logo";
 
 import styles from "../styles/landing/landing.module.css";
 import misionStyles from "../styles/landing/mision.module.css";
@@ -128,7 +129,7 @@ export default function Home() {
     <div className={styles.landing}>
       <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : styles.headerTransparent}`}>
         <nav className={styles.nav}>
-          <img src="/logo.svg" alt="Logo de Buildit" />
+          <Logo className={styles.logo} />
           <ul className={styles.navLinks}>
             <li>
               <button
