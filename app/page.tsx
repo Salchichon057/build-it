@@ -179,10 +179,10 @@ export default function Home() {
           <div className={styles.heroContent}>
             <img
               src="/max_logo.svg"
-              alt="Logo de Buildit"
+              alt="Logo de buildit"
               className={styles.logo}
             />
-            <h1>Buildit</h1>
+            <h1>buildit</h1>
           </div>
           <div className={styles.heroText}>
             <h2>De la idea a la obra con los mejores profesionales</h2>
